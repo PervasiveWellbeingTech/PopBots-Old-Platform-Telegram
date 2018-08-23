@@ -53,18 +53,18 @@ def get_time_interval(start_time, end_time):
 
 
 
-def get_all_users(db):
-    """
-    Reads the names of the users in the database. 
+# def get_all_users(db):
+#     """
+#     Reads the names of the users in the database. 
 
-    Input:
-        db -- mongodb client
-    """
-    collection = db.user_history
-    name_set = set()
-    for each in collection.find():
-        name_set.add(each['thread_id'])
-    return list(name_set)
+#     Input:
+#         db -- mongodb client
+#     """
+#     collection = db.user_history
+#     name_set = set()
+#     for each in collection.find():
+#         name_set.add(each['thread_id'])
+#     return list(name_set)
 
 def get_user_history(db, thread_id, start_time=-1, end_time=-1):
     collection = db.user_history

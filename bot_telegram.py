@@ -57,18 +57,35 @@ class TelegramBot():
         self.params = Params()
         self.config = Config()
 
-        #initialize user info 
-        self.user_history = defaultdict(list)
-        self.user_name_dict = {}
-        self.user_bot_state_dict = defaultdict(lambda:(self.recommend_bot(), self.config.START_INDEX))
-        self.user_problem_dict = {}
-        #self.user_parameters_dict = {} #enable if other parameters are needed
-
         #initialize database
         if self.params.MODE == Modes.TEXT:
             self.db = MongoClient().textbot
         else:
             self.db = MongoClient().voicebot
+
+        #initialize user info 
+        self.user_history = defaultdict(list)
+        self.user_name_dict = self.load_names(self.db.user_history)
+        self.user_bot_state_dict = defaultdict(lambda:(self.recommend_bot(), self.config.START_INDEX))
+        self.user_problem_dict = {}
+        #self.user_parameters_dict = {} #enable if other parameters are needed
+
+
+    def load_names(self, collection):
+        """
+        Loads names from database
+
+        Parameter:
+            collection (mongo collection)
+
+        Returns:
+            (dict) user_id to user_name dictionary
+        """
+        names = {}
+        for hist in collection.find():
+            names[hist['user_id']] = hist['user_name']
+        return names
+
 
 
 
@@ -92,13 +109,24 @@ class TelegramBot():
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
-                if self.conversation_timeout(user_id):
+                if self.conversation_timeout(user_id): #Time out
                     self.log_action(user_id, None, None, "TIMEOUT", "")
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
+                    self.user_bot_state_dict.pop(user_id, None)
 
                 ############ Normal Cases #######################
                 bot_id, response_id = self.get_next(user_id, query)
+                if response_id == None: #End of conversations
+                    text_response = "<CONVERSATION_END>"
+                    self.log_action(user_id, bot_id, response_id, text_response, query)
+                    self.save_history_to_database(user_id)
+                    self.user_history.pop(user_id, None)
+                    if find_keyword(query, self.config.GREETINGS): #the user activates another bot
+                        self.user_bot_state_dict[user_id] = (self.recommend_bot(), self.config.START_INDEX)
+                        bot_id, response_id = self.get_next(user_id, query)
+                    else:
+                        self.user_bot_state_dict.pop(user_id, None)
                 #handle images
                 if self.params.MODE == Modes.TEXT and response_id == self.config.OPENNING_INDEX:
                     img = open('img/{}.png'.format(bot_id), 'rb')
@@ -134,13 +162,6 @@ class TelegramBot():
                 update.message.reply_text(res)
             self.log_action(user_id, bot_id, response_id, text_response_format, query)
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
-        #end of conversation
-        else: 
-            text_response = "<CONVERSATION_END>"
-            self.log_action(user_id, bot_id, response_id, text_response, query)
-            self.save_history_to_database(user_id)
-            self.user_history.pop(user_id, None)
-            self.user_bot_state_dict.pop(user_id, None)
 
 
     def get_text_response(self, bot_id, response_id):
