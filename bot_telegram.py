@@ -59,9 +59,9 @@ class TelegramBot():
 
         #initialize database
         if self.params.MODE == Modes.TEXT:
-            self.db = MongoClient().textbot
+            self.db = MongoClient().textbot_telegram
         else:
-            self.db = MongoClient().voicebot
+            self.db = MongoClient().voicebot_telegram
 
         #initialize user info 
         self.user_history = defaultdict(list)
@@ -85,9 +85,6 @@ class TelegramBot():
         for hist in collection.find():
             names[hist['user_id']] = hist['user_name']
         return names
-
-
-
 
     def process_updates(self, bot_updates):
         """
@@ -295,8 +292,6 @@ class TelegramBot():
         self.db.user_history.update_one({'user_id':user_id},
                                         {"$push":{'user_history': history}}
                                     )
-
-
 
     def run(self):
         """
