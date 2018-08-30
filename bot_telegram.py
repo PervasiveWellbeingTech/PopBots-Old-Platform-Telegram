@@ -88,7 +88,9 @@ class TelegramBot():
 
     def process_updates(self, bot_updates):
         """
-        Cycles and process through Telegram updates and make replies.
+        Handles interactions with the Telegram server.
+        Receives all the user replies in the form of updates and tells
+        Telegram what to reply
 
         Parameters:
              bot_updates (iterator) -- all updates from bot.get_updates function

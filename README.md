@@ -8,3 +8,30 @@ user stores user_id
 user_history stores all interaction between user and chatbot in a json format
 
 current_id is the id shows the index of chatbot(with bot_id)'s question.
+
+
+To run the project 
+local computer
+	1. Run "mongod" (mongo daemon)
+	2. Open another shell window. Run "bot_telegram.py".
+
+non-Stanford servers
+	1. Copy the repository to the server.
+	2. ssh into the server.
+	3. Run "screen"
+	4. Run "mongod" (mongo daemon) inside the screen
+	5. Open another screen.
+	3. Run "bot_telegram.py".
+
+Stanford servers
+
+non-Stanford servers
+	1. Copy the repository to the server.
+	2. ssh into the server.
+	3. Run "krbscreen" and 
+	4. Run "reauth", and then "mongod" (mongo daemon) inside the screen
+	5. Open another "krbscreen"
+	3. Run "reauth", and then "bot_telegram.py".
+
+	(if you use screen or do not use reauth, the program will terminate after you log out)
+
