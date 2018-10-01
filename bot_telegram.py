@@ -98,7 +98,7 @@ class TelegramBot():
         # Request updates after the last update_id
         for update in bot_updates:
             self.update_id = update.update_id + 1
-            if update.message.text: #ignores all non-text/emoji inputs
+            if update.message and update.message.text: #ignores all non-text/emoji inputs
                 user_id = update.message.chat_id
                 query = update.message.text    
                 
@@ -254,9 +254,9 @@ class TelegramBot():
         """
         new_entry = {
                         'bot_id':bot_id, 
-                        'response_id':response_id, 
-                        'replies':list(replies), 
+                        'response_id':response_id,
                         'query':query,
+                        'replies':list(replies),
                         'time':time.time()
                     }
         self.user_history[user_id].append(new_entry)
