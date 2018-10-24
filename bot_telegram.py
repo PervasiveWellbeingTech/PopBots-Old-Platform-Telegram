@@ -158,8 +158,7 @@ class TelegramBot():
             text_response = self.get_text_response(bot_id, response_id)
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
-                #update.message.reply_text(res)
-                update.job_queue.run_once(update.message.reply_text(res), 2)
+                update.message.reply_text(res)
             self.log_action(user_id, bot_id, response_id, text_response_format, query)
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
 
