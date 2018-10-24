@@ -56,7 +56,14 @@ def get_response_dict():
         bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, response_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "We bots are always here to help when ever you feel like chatting with us!", "We hope you have a great day!"]]}, next_id=None)
         bot_texts[i][config.QUESTION_INDEX] = Reply(bot_id=i, response_id=config.QUESTION_INDEX, texts={modes.GENERAL:questions_at_end}, next_id=config.CLOSING_INDEX)
 
+    #---------------------------------------------------------------------------------------------------------------------------------
+    # Sherlock (PROBLEM SOLVING BOT)
     
+    
+    #---------------------------------------------------------------------------------------------------------------------------------
+    # Doom Bot (WORST CASE SCENARIO)
+
+
     tmp_text = {}
     tmp_text[modes.GENERAL] = [["Can you share with me more details about {problem}?"], ["Why is {problem} stressing you out?"]]
     # tmp_text[topics.TRAFFIC] = [["Traffic can really suck.", "How bad is it out there today?"]]
@@ -340,7 +347,7 @@ def get_response_dict():
     #---------------------------------------------------------------------------------------------------------------------------------
     ## checkin bot
 
-    bot_texts[8][0] = Reply(bot_id=8, response_id=0, texts={modes.GENERAL:[["Hmm, that sounds stressful.","I\'m not sure I can help you solve that probelm directly, but maybe we could check and see how it\'s affecting other aspects of your life.","Does that sound ok?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
+    bot_texts[8][0] = Reply(bot_id=8, response_id=0, texts={modes.GENERAL:[["Hmm, that sounds stressful.","I\'m not sure I can help you solve that problem directly, but maybe we could check and see how it\'s affecting other aspects of your life.","Does that sound ok?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
 
     #can we pass off to a bot friend?
     bot_texts[8][1] =  Reply(bot_id=8, response_id=1, texts={modes.GENERAL:[["Okay, maybe I can introduce you to my other bot-friends?"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, config.QUESTION_INDEX)])

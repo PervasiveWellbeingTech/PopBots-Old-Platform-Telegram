@@ -158,7 +158,8 @@ class TelegramBot():
             text_response = self.get_text_response(bot_id, response_id)
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
-                update.message.reply_text(res)
+                #update.message.reply_text(res)
+                update.job_queue.run_once(update.message.reply_text(res), 2)
             self.log_action(user_id, bot_id, response_id, text_response_format, query)
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
 
@@ -318,5 +319,6 @@ class TelegramBot():
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
     bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
+    #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
     bot.run()
 
