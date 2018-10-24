@@ -1,7 +1,7 @@
 #/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 """
-This file communicates between the database ans the API (facebook).
+This file communicates between the database and the API (Telegram).
 
 Created by Nick Tantivasadakarn.
 """
