@@ -20,6 +20,7 @@ from pymongo import MongoClient
 import telegram
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
+import hashlib
 
 
 TIMEOUT_SECONDS = 3600
@@ -104,6 +105,10 @@ class TelegramBot():
                 
                 ############ Special Cases #######################
                 if query == '/start': #restart
+                    # Tell them the id
+                    code = hashlib.sha224(str(user_id).encode('utf-8')).hexdigest()
+                    update.message.reply_text('If you are participating in the research study, please save the following number ' + code)
+                    ##########
                     self.log_action(user_id, None, None, "RESET", "")
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
@@ -317,7 +322,7 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
     #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
+    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
     bot.run()
 
