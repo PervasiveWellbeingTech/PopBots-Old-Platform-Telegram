@@ -327,17 +327,16 @@ def get_response_dict():
     #---------------------------------------------------------------------------------------------------------------------------------
     ## onboarding bot
 
-    bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi! We\'re the Pop-Bots!", "We are here to help you with stress.", "Sounds good?"]]}, next_id=2)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
+    bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi! We\'re the Pop-Bots!", "We are here to help you with stress.", "Sounds good?"]]}, next_id=1)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
     
-    tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
-                "We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
-                "We will also ask some questions about how helpful we are. We want you to answer as honestly as you can because it will help us to learn and improve. ",
-                "Lastly, in emergencies, please stop and call 911 or 1-800-273-8255 (the suicide hotline).", "A human may never read what you are writing, so it\'s important that you get help apart from us if you feel you are in danger.",
-                "Sound good? "]]
+    # tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
+    #             "We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
+    #             "We will also ask some questions about how helpful we are. We want you to answer as honestly as you can because it will help us to learn and improve. ",
+    #             "Lastly, in emergencies, please stop and call 911 or 1-800-273-8255 (the suicide hotline).", "A human may never read what you are writing, so it\'s important that you get help apart from us if you feel you are in danger.",
+    #             "Sound good? "]]
     
-    bot_texts[7][0] = Reply(bot_id=7, response_id=0, texts={modes.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
-    del tmp_text
-    bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["Please email our tech team. If you have any questions on the above. We would love to assist you. Ok?"]]}, next_id=2)
+    # bot_texts[7][0] = Reply(bot_id=7, response_id=0, texts={modes.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
+    bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["We are part of a research study by Stanford University. Please register at https://stanforduniversity.qualtrics.com/jfe/form/SV_cGZtiXUVLkXHjud and enter the code from the website.", "You can also continue by typing in \'ok\', and your data will not be used in the study."]]}, next_id=2)
     bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
 

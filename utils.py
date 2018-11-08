@@ -12,6 +12,7 @@ import nltk
 # import enchant
 from rake_nltk import Rake
 from enum import Enum
+import re
 
 #from fbchat import Client
 #from fbchat.models import *
@@ -159,6 +160,27 @@ def find_name(input_str):
             if len(result) > 0 and len(result) < 20:
                 return result.capitalize()
     return input_str.capitalize().split()[0]
+
+def find_id(input_str):
+    """
+    Extracts participant id number, 
+
+    This function uses regular expression to extract the first
+    string of numbers that matches the id format.
+
+    Parameters:
+        input_str(str) -- string containing the id
+
+    Returns
+        string (if found), None (if not found)
+
+    """
+    ids = re.findall(r'[0-9]{5}', input_str)
+    if not ids:
+        return None
+    else:
+        return ids[0]
+
 
 
 

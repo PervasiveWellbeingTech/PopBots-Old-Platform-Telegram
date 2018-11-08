@@ -14,7 +14,7 @@ import os, nltk
 
 from collections import defaultdict
 from os import system
-from utils import Params, Config, Modes, find_keyword, find_name
+from utils import Params, Config, Modes, find_keyword, find_name, find_id
 from get_response import get_response_dict
 from pymongo import MongoClient
 import telegram
@@ -105,9 +105,6 @@ class TelegramBot():
                 
                 ############ Special Cases #######################
                 if query == '/start': #restart
-                    # Tell them the id
-                    code = hashlib.sha224(str(user_id).encode('utf-8')).hexdigest()
-                    update.message.reply_text('If you are participating in the research study, please save the following number ' + code)
                     ##########
                     self.log_action(user_id, None, None, "RESET", "")
                     self.save_history_to_database(user_id)
@@ -136,8 +133,15 @@ class TelegramBot():
                     img = open('img/{}.png'.format(bot_id), 'rb')
                     self.bot.send_photo(chat_id=user_id, photo=img)
 
+                #extract participant id
+                if bot_id == 7 and response_id == 2:
+                    subj_id = find_id(query)
+                    if subj_id:
+                        self.db.user_history.update_one({'user_id':user_id}, {'$set':{'user_name': subj_id}},
+                                     upsert=True)
+
                 #extract names
-                if bot_id == 7 and response_id ==self.config.CLOSING_INDEX:
+                if bot_id == 7 and response_id == self.config.CLOSING_INDEX:
                     name = find_name(query)
                     self.user_name_dict[user_id] = name
                     self.db.user_history.update_one({'user_id':user_id}, {'$set':{'user_name': name}},
