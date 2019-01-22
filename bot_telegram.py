@@ -42,6 +42,7 @@ class TelegramBot():
         self.user_name_dict(dict) -- user_id to name dictionary
         self.user_bot_state_dict (defaultdict) -- user_id to bot state dict (defaults to a random bot)
         self.user_problem_dict(dict) -- user_id to problem dictionary
+        self.user_parameters_dict(dict) -- dictionary that stores all parameters used by the bots.
     """
 
     def __init__(self, token): #, reply_dict, **kwargs):
@@ -69,7 +70,10 @@ class TelegramBot():
         self.user_name_dict = self.load_names(self.db.user_history)
         self.user_bot_state_dict = defaultdict(lambda:(self.recommend_bot(), self.config.START_INDEX))
         self.user_problem_dict = {}
-        #self.user_parameters_dict = {} #enable if other parameters are needed
+
+
+        self.allow_choice = True 
+        self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
 
 
     def load_names(self, collection):
@@ -86,6 +90,21 @@ class TelegramBot():
         for hist in collection.find():
             names[hist['user_id']] = hist['user_name']
         return names
+
+    def load_user_parameters(self, collection):
+        """
+        Loads user parameters from database
+
+        Parameter:
+            collection (mongo collection)
+
+        Returns:
+            (dict) user_id to user_parameter dictionary
+        """
+        parameters = {}
+        for parameters in collection.find():
+            names[hist['user_id']] = hist['user_parameters']
+        return parameters
 
     def process_updates(self, bot_updates):
         """
@@ -110,6 +129,7 @@ class TelegramBot():
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
+                
                 if self.conversation_timeout(user_id): #Time out
                     self.log_action(user_id, None, None, "TIMEOUT", "")
                     self.save_history_to_database(user_id)
@@ -187,6 +207,7 @@ class TelegramBot():
             (list) -- list of strings the responses 
         """
         response_dict =  self.reply_dict[bot_id][response_id].texts
+        
         #get text of the selected mode
         response_choices = response_dict.get(self.params.MODE, self.reply_dict[bot_id][response_id].texts[Modes.GENERAL])
         response = random.choice(response_choices)
@@ -225,8 +246,8 @@ class TelegramBot():
             user_id (int) -- user unique identifyer
             query (string) -- user input string.
         """
+        #get current id
         (bot_id, response_id) = self.user_bot_state_dict[user_id]
-        #otherwise
         next = self.reply_dict[bot_id][response_id].next_id
         if not next:
             next_id = None
@@ -299,6 +320,13 @@ class TelegramBot():
             return False
 
     def save_history_to_database(self, user_id):
+        """
+        This function sends the data from the user history (pulled from the class variable)
+        to the database
+
+        Parameter:
+            user_id(int) -- unique identifyer
+        """
         history = self.user_history[user_id]
         self.db.user_history.update_one({'user_id':user_id},
                                         {"$push":{'user_history': history}}
@@ -326,7 +354,7 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
-    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
+    bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
+    #bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
     bot.run()
 
