@@ -233,10 +233,7 @@ class TelegramBot():
             query (string) -- user input string.
         """
         (bot_id, response_id) = self.user_bot_state_dict[user_id]
-<<<<<<< HEAD
-        #otherwise
-=======
->>>>>>> parent of 70d4569... half finished choice implementation
+
         next = self.reply_dict[bot_id][response_id].next_id
         if not next:
             next_id = None
