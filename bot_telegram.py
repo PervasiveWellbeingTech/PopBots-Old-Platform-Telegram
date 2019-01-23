@@ -20,6 +20,7 @@ from pymongo import MongoClient
 import telegram
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
+import hashlib
 
 
 TIMEOUT_SECONDS = 3600
@@ -68,7 +69,14 @@ class TelegramBot():
         self.user_name_dict = self.load_names(self.db.user_history)
         self.user_bot_state_dict = defaultdict(lambda:(self.recommend_bot(), self.config.START_INDEX))
         self.user_problem_dict = {}
+<<<<<<< HEAD
         #self.user_parameters_dict = {} #enable if other parameters are needed
+=======
+
+
+        self.allow_choice = True 
+        self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
+>>>>>>> parent of 70d4569... half finished choice implementation
 
 
     def load_names(self, collection):
@@ -225,7 +233,10 @@ class TelegramBot():
             query (string) -- user input string.
         """
         (bot_id, response_id) = self.user_bot_state_dict[user_id]
+<<<<<<< HEAD
         #otherwise
+=======
+>>>>>>> parent of 70d4569... half finished choice implementation
         next = self.reply_dict[bot_id][response_id].next_id
         if not next:
             next_id = None
