@@ -341,7 +341,8 @@ def get_response_dict():
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
 
     
-    bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot would you like to talk to?"]]}, next_id=None)
+    bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot would you like to talk to?"]]}, next_id=4)
+    bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[None]}, next_id=None)
 
     bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. We hope we can help you when you need us.", "Just say hi when you want to talk to us."]]}, next_id=None)
 

@@ -20,7 +20,6 @@ from pymongo import MongoClient
 import telegram
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
-import hashlib
 
 
 TIMEOUT_SECONDS = 3600
@@ -68,12 +67,16 @@ class TelegramBot():
         #initialize user info 
         self.user_history = defaultdict(list)
         self.user_name_dict = self.load_names(self.db.user_history)
-        self.user_bot_state_dict = defaultdict(lambda:(self.recommend_bot(), self.config.START_INDEX))
+        self.user_bot_state_dict = defaultdict(lambda:(None, None))
         self.user_problem_dict = {}
 
 
         self.allow_choice = True 
         self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
+
+        self.bots_keyboard =[[telegram.InlineKeyboardButton("Random")]]+[
+                                [telegram.InlineKeyboardButton(name)] for idx, name in enumerate(self.params.bot_name_list) if idx not in {4,7}]
+
 
 
     def load_names(self, collection):
@@ -144,7 +147,7 @@ class TelegramBot():
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     if find_keyword(query, self.config.GREETINGS): #the user activates another bot
-                        self.user_bot_state_dict[user_id] = (self.recommend_bot(), self.config.START_INDEX)
+                        self.user_bot_state_dict[user_id] = (None, None)
                         bot_id, response_id = self.get_next(user_id, query)
                     else:
                         self.user_bot_state_dict.pop(user_id, None)
@@ -167,9 +170,27 @@ class TelegramBot():
                     self.db.user_history.update_one({'user_id':user_id}, {'$set':{'user_name': name}},
                                      upsert=True)
 
+                #show choices
+                if  bot_id == 7 and response_id == 3 and self.user_parameters_dict.get('choice_enabled', False):
+                    bots_keyboard = self.bots_keyboard
+                    reply_markup = reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard)
+                    self.bot.send_message(chat_id=user_id,text='Select below.',reply_markup=reply_markup)
+                
+                #select bot
+                if bot_id == 7 and response_id == 4:
+                    self.bot.send_message(chat_id=user_id,text='Loading Bot.',reply_markup=telegram.ReplyKeyboardRemove())
+                    bot_choice = self.params.bot2id.get(query, None)
+                    if bot_choice:
+                        self.user_bot_state_dict[user_id] = (bot_choice, self.config.OPENNING_INDEX)
+                    else:
+                        self.user_bot_state_dict[user_id] = (self.recommend_bot, self.config.OPENNING_INDEX)
+                    continue
 
                 #handle text responses
                 self.post_and_log_text(update, bot_id, response_id, user_id, query)
+
+
+
 
 
     def post_and_log_text(self, update, bot_id, response_id, user_id, query):
@@ -248,6 +269,11 @@ class TelegramBot():
         """
         #get current id
         (bot_id, response_id) = self.user_bot_state_dict[user_id]
+        if bot_id == None and response_id == None:
+            if self.user_parameters_dict.get('choice_enabled', True): #go to choice selection
+                return 7, 3
+            else:
+                (bot_id, response_id) = (self.recommend_bot(), self.config.START_INDEX)
         next = self.reply_dict[bot_id][response_id].next_id
         if not next:
             next_id = None
