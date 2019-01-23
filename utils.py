@@ -75,6 +75,7 @@ class Config:
         self.ABRUPT_CLOSING_INDEX = -7
         self.QUESTION_INDEX = -8
 
+
         self.DEFAULT_YES = ['yes', 'ok', 'sure', 'right', 'yea', 'ye', 'yup', 'yeah', 'okay']
         self.DEFAULT_NO = ['no', 'not',  'neither', 'neg', 'don\'t', 'doesn\'', 'donnot', 'dont', '\'t', 'nothing', 'nah', 'na']
         self.DEFAULT_DK = ["dk", "dunno", "dno", "don't know", "idk"]

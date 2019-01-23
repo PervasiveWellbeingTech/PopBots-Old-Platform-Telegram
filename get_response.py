@@ -339,7 +339,6 @@ def get_response_dict():
     bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["We are part of a research study by Stanford University. If you wish to participate, please register at the link below and enter the code from the end of the survey.", "https://stanforduniversity.qualtrics.com/jfe/form/SV_cGZtiXUVLkXHjud.", "If you do not wish to participate, please type \'ok\', and your data will not be used in the study."]]}, next_id=2)
     bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
-
     
     bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot would you like to talk to?"]]}, next_id=4)
     bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[None]}, next_id=None)
