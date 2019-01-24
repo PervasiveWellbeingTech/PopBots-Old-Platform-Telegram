@@ -45,6 +45,7 @@ class Params:
         self.bot_tech_name_list = ['worst case', 'problem solving', 'positive thinking', 'humor', 'relaxation', 'self love', 'distraction', 'introduce', 'check']
         #self.bot_color_list = [ThreadColor.BILOBA_FLOWER, ThreadColor.BRILLIANT_ROSE, ThreadColor.CAMEO, ThreadColor.DEEP_SKY_BLUE, ThreadColor.FERN, ThreadColor.PUMPKIN, ThreadColor.RADICAL_RED, ThreadColor.SHOCKING, ThreadColor.VIKING]
 
+        self.bot2id = {name:idx for idx,name in enumerate(self.bot_name_list)}
     def set_sleeping_time(self, sleeping_time):
         self.SLEEPING_TIME = sleeping_time
 
@@ -78,6 +79,7 @@ class Config:
         self.DEFAULT_NO = ['no', 'not',  'neither', 'neg', 'don\'t', 'doesn\'', 'donnot', 'dont', '\'t', 'nothing', 'nah', 'na']
         self.DEFAULT_DK = ["dk", "dunno", "dno", "don't know", "idk"]
         self.GREETINGS = ['hi','hey', 'hello']
+
         # self.DEFAULT_YES = "__YES__"
         # self.DEFAULT_NO = "__NO__"
         # self.DEFAULT_DK = "__DK__"
