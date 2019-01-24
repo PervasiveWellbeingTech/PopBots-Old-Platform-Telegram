@@ -168,11 +168,13 @@ class TelegramBot():
                                 self.db.user_history.update_one({'user_id':user_id}, {
                                             '$set':{'user_parameters': {'choice_enabled': True}}},
                                             upsert=True)
+                                self.user_parameters_dict[user_id]['choice_enabled'] = True
                                 self.allow_choice = False
                             else:
                                 self.db.user_history.update_one({'user_id':user_id}, {
                                             '$set':{'user_parameters': {'choice_enabled': False}}},
                                             upsert=True)
+                                self.user_parameters_dict[user_id]['choice_enabled'] = False
                                 self.allow_choice = True
 
 
