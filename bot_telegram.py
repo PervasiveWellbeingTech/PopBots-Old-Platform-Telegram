@@ -76,8 +76,11 @@ class TelegramBot():
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict = self.load_parameters(self.db.user_history)
 
-        self.bots_keyboard =[[telegram.InlineKeyboardButton("Choose for me.")]]+[
-                                [telegram.InlineKeyboardButton(name)] for idx, name in enumerate(self.params.bot_name_list) if idx not in {4,7}]
+        keyboards =[telegram.InlineKeyboardButton("Choose for me.")]+[
+                                telegram.InlineKeyboardButton(name) for idx, name in enumerate(self.params.bot_name_list) if idx not in {4,7}]
+        self.bots_keyboard = [ [x,y] for x,y in zip(keyboards[0::2], keyboards[1::2]) ]
+        if len(keyboards)%2 ==1:
+            self.bots_keyboard.append([keyboards[-1]])
 
 
     def load_parameters(self, collection):
@@ -191,7 +194,7 @@ class TelegramBot():
                 #show choices
                 if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
                     bots_keyboard = self.bots_keyboard
-                    reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard)
+                    reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)
                     #self.bot.send_message_text(chat_id=user_id,text="Select below.",reply_markup=reply_markup)
 
                 
@@ -213,7 +216,7 @@ class TelegramBot():
                 #handle text responses
                 self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
 
-    def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup):
+    def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup = None):
         """
         Posts the appropriate text to Telegram, and logs the conversation
 
