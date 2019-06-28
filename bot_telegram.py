@@ -139,11 +139,6 @@ class TelegramBot():
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
-                if query == '/switch': #switch bot
-                    self.log_action(user_id, None, None, "SWITCH", "")
-                    self.save_history_to_database(user_id)
-                    self.user_history.pop(user_id, None)
-                    self.user_bot_state_dict.pop(user_id, None)
                 if self.conversation_timeout(user_id): #Time out
                     self.log_action(user_id, None, None, "TIMEOUT", "")
                     self.save_history_to_database(user_id)
@@ -406,7 +401,7 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
-    #bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
+    #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
+    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
     bot.run()
 
