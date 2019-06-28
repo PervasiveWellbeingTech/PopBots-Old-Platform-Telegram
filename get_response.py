@@ -38,7 +38,7 @@ def get_response_dict():
                 ["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s stressing you out right now?"],
                 ["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s on your mind that is stressing you out?"],
                 ["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s something that\'s on your mind that is stressing you out?"]]
-    closing = [["Thank you for sharing with me. I hope I\'ve been able to help.", "Have a nice day!"]]
+    closing = [["Thank you for sharing with me. I hope I\'ve been able to help.", "Have a nice day!", "---The conversation has ended. Say \"Hi\" when you need us.---"]]
 
     dk_check_at_begining = [["Do you want me to come back later?"]]
 
@@ -55,9 +55,6 @@ def get_response_dict():
         # bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, response_id=config.DK_INDEX, texts={modes.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
         bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, response_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "We bots are always here to help when ever you feel like chatting with us!", "We hope you have a great day!"]]}, next_id=None)
         bot_texts[i][config.QUESTION_INDEX] = Reply(bot_id=i, response_id=config.QUESTION_INDEX, texts={modes.GENERAL:questions_at_end}, next_id=config.CLOSING_INDEX)
-
-    #---------------------------------------------------------------------------------------------------------------------------------
-    # Sherlock (PROBLEM SOLVING BOT)
     
     
     #---------------------------------------------------------------------------------------------------------------------------------
@@ -342,7 +339,7 @@ def get_response_dict():
     
     bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot would you like to talk to?"]]}, next_id=4)
     bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[["Ok. Let me introduce you to my friend."]]}, next_id=None)
-    bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. We hope we can help you when you need us.", "Just say hi when you want to talk to us."]]}, next_id=None)
+    bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. We hope we can help you when you need us.", "Just say \"Hi\" when you want to talk to us."]]}, next_id=None)
 
 
     #---------------------------------------------------------------------------------------------------------------------------------

@@ -144,6 +144,11 @@ class TelegramBot():
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict.pop(user_id, None)
+                if query == '/switch': #switch
+                    self.log_action(user_id, None, None, "SWITCH", "")
+                    self.save_history_to_database(user_id)
+                    self.user_history.pop(user_id, None)
+                    self.user_bot_state_dict.pop(user_id, None)
 
                 ############ Normal Cases #######################
                 bot_id, response_id = self.get_next(user_id, query)
@@ -196,7 +201,9 @@ class TelegramBot():
                     bots_keyboard = self.bots_keyboard
                     reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)
                     #self.bot.send_message_text(chat_id=user_id,text="Select below.",reply_markup=reply_markup)
-
+                
+                if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX}:
+                    reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
                 
                 #select bot
                 if bot_id == 7 and response_id == 4:
@@ -401,7 +408,7 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
-    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
+    bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
+    #bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
     bot.run()
 
