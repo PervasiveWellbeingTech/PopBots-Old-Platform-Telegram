@@ -53,7 +53,7 @@ def get_response_dict():
         # bot_texts[i][config.CONTINUE_INDEX] = Reply(bot_id=i, response_id=config.CONTINUE_INDEX, texts={modes.GENERAL:[["Please continue."]]}, next_id=config.ARE_YOU_DONE_INDEX)
         bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:closing}, next_id=None)
         # bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, response_id=config.DK_INDEX, texts={modes.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
-        bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, response_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "We bots are always here to help when ever you feel like chatting with us!", "We hope you have a great day!"]]}, next_id=None)
+        bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, response_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "We bots are always here to help when ever you feel like chatting with us!", "We hope you have a great day!","---The conversation has ended. Say \"Hi\" when you need us.---"]]}, next_id=None)
         bot_texts[i][config.QUESTION_INDEX] = Reply(bot_id=i, response_id=config.QUESTION_INDEX, texts={modes.GENERAL:questions_at_end}, next_id=config.CLOSING_INDEX)
     
     
@@ -333,7 +333,7 @@ def get_response_dict():
     #             "Sound good? "]]
     
     # bot_texts[7][0] = Reply(bot_id=7, response_id=0, texts={modes.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
-    bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["We are part of a research study by Stanford University. If you wish to participate, please register at the link below and enter the code from the end of the survey.", "https://stanforduniversity.qualtrics.com/jfe/form/SV_cGZtiXUVLkXHjud", "If you do not wish to participate, your data will not be used in the study."]]}, next_id=2)
+    bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["We are part of a research study by Stanford University. If you wish to participate, please register at the link below.", "https://stanforduniversity.qualtrics.com/jfe/form/SV_cGZtiXUVLkXHjud?id={subject_id}", "If you do not wish to participate, your data will not be used in the study."]]}, next_id=2)
     bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     
