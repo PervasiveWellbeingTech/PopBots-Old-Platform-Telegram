@@ -9,11 +9,12 @@ Created by Nick Tantivasadakarn.
 import time
 import random
 import string
-import sys, getopt
-import os, nltk
+#import sys, getopt
+#import os, nltk
+import re
 
 from collections import defaultdict
-from os import system
+#from os import system
 from utils import Params, Config, Modes, find_keyword, find_name, find_id
 from get_response import get_response_dict
 from pymongo import MongoClient
@@ -135,19 +136,21 @@ class TelegramBot():
                 query = update.message.text    
                 
                 ############ Special Cases #######################
-                if query == '/start': #restart
-                    ##########
+                print(query)
+                if re.match(r'/start', query): #restart
                     self.log_action(user_id, None, None, "RESET", "")
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
-                if self.conversation_timeout(user_id): #Time out
+
+                elif self.conversation_timeout(user_id): #Time out
                     self.log_action(user_id, None, None, "TIMEOUT", "")
                     self.save_history_to_database(user_id)
                     self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict.pop(user_id, None)
-                if query == '/switch': #switch
+
+                elif re.match('/switch', query): #switch
                     self.log_action(user_id, None, None, "SWITCH", "")
                     self.save_history_to_database(user_id)
                     self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
@@ -179,7 +182,7 @@ class TelegramBot():
                                      upsert=True)
                         self.ids[user_id] = subject_id  
                     #alternate between allowing users to choose bot and forced choice
-                    if not self.user_parameters_dict['choice_enabled']:
+                    if not self.user_parameters_dict[user_id]['choice_enabled']:
                         if self.allow_choice:
                             self.db.user_history.update_one({'user_id':user_id}, {
                                         '$set':{'user_parameters': {'choice_enabled': True}}},
@@ -209,6 +212,10 @@ class TelegramBot():
                     bots_keyboard = self.bots_keyboard
                     reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)
                     #self.bot.send_message_text(chat_id=user_id,text="Select below.",reply_markup=reply_markup                
+                
+                if bot_id == 7 and response_id == 1:
+                    reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Ok")]], resize_keyboard= True)
+
                 if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX}:
                     reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
                 
@@ -229,6 +236,37 @@ class TelegramBot():
                     self.bot.send_photo(chat_id=user_id, photo=img)
                 #handle text responses
                 self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+
+    def set_subj_id(self, user_id:int, subject_id:int):
+        """
+        Parameters:
+            user_id(int) -- unique user identifye
+            subject_id(int) -- subject id (MUST be a non-indentifiable number)
+        """
+        self.db.user_history.update_one({'user_id':user_id}, {'$set':{'subject_id': subject_id}},
+                     upsert=True)
+        self.ids[user_id] = subject_id  
+
+    def set_choice(self, user_id:int):
+        """
+        Set subjects to either the choice or non-choice group.
+        Parameters:
+            user_id(int) -- unique user identifyer
+        """
+        if not self.user_parameters_dict[user_id]['choice_enabled']:
+            if self.allow_choice:
+                self.db.user_history.update_one({'user_id':user_id}, {
+                            '$set':{'user_parameters': {'choice_enabled': True}}},
+                            upsert=True)
+                self.user_parameters_dict[user_id]['choice_enabled'] = True
+                self.allow_choice = False
+            else:
+                self.db.user_history.update_one({'user_id':user_id}, {
+                            '$set':{'user_parameters': {'choice_enabled': False}}},
+                            upsert=True)
+                self.user_parameters_dict[user_id]['choice_enabled'] = False
+                self.allow_choice = True
+
 
     def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup = None):
         """
