@@ -429,7 +429,7 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
-    #bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
+    #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
+    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
     bot.run()
 
