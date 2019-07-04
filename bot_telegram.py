@@ -136,12 +136,15 @@ class TelegramBot():
                 query = update.message.text    
                 
                 ############ Special Cases #######################
-                print(query)
                 if re.match(r'/start', query): #restart
                     self.log_action(user_id, None, None, "RESET", "")
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
+                    subj_id = re.findall(' ([0-9]+)', query)
+                    if subj_id:
+                        self.set_subj_id(user_id, int(subj_id[0]))
+                    self.set_choice(user_id)
 
                 elif self.conversation_timeout(user_id): #Time out
                     self.log_action(user_id, None, None, "TIMEOUT", "")
@@ -150,7 +153,7 @@ class TelegramBot():
                     self.user_history.pop(user_id, None)
                     self.user_bot_state_dict.pop(user_id, None)
 
-                elif re.match('/switch', query): #switch
+                elif re.match(r'/switch', query): #switch
                     self.log_action(user_id, None, None, "SWITCH", "")
                     self.save_history_to_database(user_id)
                     self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
@@ -171,34 +174,9 @@ class TelegramBot():
                     else:
                         self.user_bot_state_dict.pop(user_id, None)
 
-                #extract participant id & set whether the participant can choose the bots
-                if bot_id == 7 and response_id == 1:
-                    if not self.ids[user_id]:
-                        for _ in range(1000):  #### Generate a unique number (!!!!! This has the possibility of crashing)
-                            subject_id = random.randint(1000,9999) 
-                            if subject_id not in self.ids.values():
-                                break
-                        self.db.user_history.update_one({'user_id':user_id}, {'$set':{'subject_id': subject_id}},
-                                     upsert=True)
-                        self.ids[user_id] = subject_id  
-                    #alternate between allowing users to choose bot and forced choice
-                    if not self.user_parameters_dict[user_id]['choice_enabled']:
-                        if self.allow_choice:
-                            self.db.user_history.update_one({'user_id':user_id}, {
-                                        '$set':{'user_parameters': {'choice_enabled': True}}},
-                                        upsert=True)
-                            self.user_parameters_dict[user_id]['choice_enabled'] = True
-                            self.allow_choice = False
-                        else:
-                            self.db.user_history.update_one({'user_id':user_id}, {
-                                        '$set':{'user_parameters': {'choice_enabled': False}}},
-                                        upsert=True)
-                            self.user_parameters_dict[user_id]['choice_enabled'] = False
-                            self.allow_choice = True
-
-
                 #extract names
-                if bot_id == 7 and response_id == self.config.CLOSING_INDEX:
+                #if bot_id == 7 and response_id == self.config.CLOSING_INDEX:
+                if bot_id == 7 and response_id == 2:
                     name = find_name(query)
                     self.user_name_dict[user_id] = name
                     self.db.user_history.update_one({'user_id':user_id}, {'$set':{'user_name': name}},
@@ -210,12 +188,8 @@ class TelegramBot():
                 #show choices
                 if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
                     bots_keyboard = self.bots_keyboard
-                    reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)
-                    #self.bot.send_message_text(chat_id=user_id,text="Select below.",reply_markup=reply_markup                
+                    reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)               
                 
-                if bot_id == 7 and response_id == 1:
-                    reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Ok")]], resize_keyboard= True)
-
                 if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX}:
                     reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
                 
@@ -245,15 +219,15 @@ class TelegramBot():
         """
         self.db.user_history.update_one({'user_id':user_id}, {'$set':{'subject_id': subject_id}},
                      upsert=True)
-        self.ids[user_id] = subject_id  
+        self.ids[user_id] = subject_id
 
     def set_choice(self, user_id:int):
         """
-        Set subjects to either the choice or non-choice group.
+        Set subjects to either the choice (able to choose bots) or non-choice group.
         Parameters:
             user_id(int) -- unique user identifyer
         """
-        if not self.user_parameters_dict[user_id]['choice_enabled']:
+        if 'choice_enabled' not in self.user_parameters_dict[user_id]:
             if self.allow_choice:
                 self.db.user_history.update_one({'user_id':user_id}, {
                             '$set':{'user_parameters': {'choice_enabled': True}}},
