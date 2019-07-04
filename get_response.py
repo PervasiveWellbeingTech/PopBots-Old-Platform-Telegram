@@ -125,7 +125,7 @@ def get_response_dict():
 
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Ok, give me more detail about {problem}"]]
+    tmp_text[modes.GENERAL] = [["Ok, give me more details about {problem}"]]
     # tmp_text[topics.TRAFFIC] = [["No one likes traffic.", "How bad is it out there today?"]]
     # tmp_text[topics.TIRED] = [["I see that you seem tired.", "Do you know why?"]]
     # tmp_text[topics.LATE] = [["Why are you late today?"]]
@@ -324,8 +324,11 @@ def get_response_dict():
     #---------------------------------------------------------------------------------------------------------------------------------
     ## onboarding bot
 
-    bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi! We\'re the Pop-Bots!", "We are here to help you with stress.", "Sounds good?"]]}, next_id=1)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
-    
+    #bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi! We\'re the Pop-Bots!", "We are here to help you with stress.", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
+    bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Howdy! ✋ We're the Pop-Bots!","We \"pop\" in to have simple and brief conversations and help you with your everyday stress.", "Please keep each response in one line so we know that you are done. 😊", "Sounds good?"]]}, next_id=1)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
+    bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["What should we call you?"]]}, next_id=2)
+    bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Nice to meet you {name}. We\'re all excited to get to know you. Please explore the app and get to know all 6 of us as well.","As you interact with us, we will learn to choose the best PopBot for you.", "Okay?"]]}, next_id=5)
+    bot_texts[7][5] = Reply(bot_id=7, response_id=5, texts={modes.GENERAL:[["Remember that we are just bots and we can be …uh… pretty silly. 🤪🤪🤪🤪", "At any point, you can type \"/switch\" to have a conversation with a new bot.", "Also, we are not made to handle serious mental problems. Please talk to a therapist for those situations or call 911 if it is an emergency.", "Capeesh?😉"]]}, next_id=config.CLOSING_INDEX)
     # tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
     #             "We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
     #             "We will also ask some questions about how helpful we are. We want you to answer as honestly as you can because it will help us to learn and improve. ",
@@ -333,13 +336,13 @@ def get_response_dict():
     #             "Sound good? "]]
     
     # bot_texts[7][0] = Reply(bot_id=7, response_id=0, texts={modes.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
-    bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["We are part of a research study by Stanford University. If you wish to participate, please register at the link below.", "https://stanforduniversity.qualtrics.com/jfe/form/SV_cGZtiXUVLkXHjud?id={subject_id}", "If you do not wish to participate, your data will not be used in the study."]]}, next_id=2)
-    bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
+    #bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["We are part of a research study by Stanford University. If you wish to participate, please register at the link below.", "https://stanforduniversity.qualtrics.com/jfe/form/SV_cGZtiXUVLkXHjud?id={subject_id}", "If you do not wish to participate, your data will not be used in the study."]]}, next_id=2)
+    #bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     
     bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot would you like to talk to?"]]}, next_id=4)
     bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[["Ok. Let me introduce you to my friend."]]}, next_id=None)
-    bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. We hope we can help you when you need us.", "Just say \"Hi\" when you want to talk to us."]]}, next_id=None)
+    bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Let’s get started! 🎉🎉🎉 Type \"Hi\" to start the conversation with one of us."]]}, next_id=None)
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
