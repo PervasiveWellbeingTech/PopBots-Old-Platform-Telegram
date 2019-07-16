@@ -10,6 +10,16 @@ user_history stores all interaction between user and chatbot in a json format
 current_id is the id shows the index of chatbot(with bot_id)'s question.
 
 
+
+Setting up
+	1. Set up the python environment (anaconda) using "environment.yml"
+	2. Install MongoDB 
+		https://docs.mongodb.com/manual/installation/
+	3. Ask for/create the file containing the Telegram bot token (token.txt).
+		If you are developping the bot on your own, it is recommended to create your own bot
+		and use your own token. https://core.telegram.org/bots
+
+
 To run the project 
 local computer
 	1. Run "mongod" (mongo daemon)

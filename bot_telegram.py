@@ -162,8 +162,8 @@ class TelegramBot():
 
                 ############ Normal Cases #######################
                 bot_id, response_id = self.get_next(user_id, query)
-                if response_id == None: #End of conversations
-                    text_response = "<CONVERSATION_END>"
+                
+                if response_id == None: #End of conver <CONVERSATION_END>"
                     self.log_action(user_id, bot_id, response_id, text_response, query)
                     self.save_history_to_database(user_id)
                     self.user_history.pop(user_id, None)
