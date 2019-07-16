@@ -131,7 +131,7 @@ class TelegramBot():
         # Request updates after the last update_id
         for update in bot_updates:
             self.update_id = update.update_id + 1
-            if update.message and update.message.text: #ignores all non-text/emoji inputs
+            if update.message and update.message.text: #ignores all non-text inputs
                 user_id = update.message.chat_id
                 query = update.message.text    
                 
@@ -389,7 +389,7 @@ class TelegramBot():
             (bool) -- True if the conversation has timed out
         """
         if self.user_history[user_id]:
-            last_entry_time = self.user_history[user_id][-1]['time']
+            last_entry_time = self.user_history[user_id][0]['time']
             return time.time()-last_entry_time >= TIMEOUT_SECONDS
         else:
             return False
@@ -429,7 +429,8 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    #bot = TelegramBot('660721089:AAFFtzkiZVC96U_Cqzt3Y3sW_BsHaFyJfFY') #bot for testing only
-    bot = TelegramBot('676639758:AAFrOKaCJAzBOO-7LM2W3p4Ie1Rkf9O6qsU')
+    f = open('token_test.txt')
+    token = f.read()
+    bot = TelegramBot(token)
     bot.run()
 
