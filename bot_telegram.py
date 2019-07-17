@@ -165,9 +165,11 @@ class TelegramBot():
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
         
-        if response_id == None: #End of conver <CONVERSATION_END>"
+        if response_id == self.config.CLOSING_INDEX:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
             self.save_history_to_database(user_id)
+        
+        if response_id == None: #End of conversation"
             self.user_history.pop(user_id, None)
             self.user_parameters_dict[user_id]['last']=bot_id
             if find_keyword(query, self.config.GREETINGS): #the user activates another bot
