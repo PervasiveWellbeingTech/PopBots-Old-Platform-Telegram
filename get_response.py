@@ -329,6 +329,9 @@ def get_response_dict():
     bot_texts[7][1] = Reply(bot_id=7, response_id=1, texts={modes.GENERAL:[["What should we call you?"]]}, next_id=2)
     bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Nice to meet you {name}. We\'re all excited to get to know you. Please explore the app and get to know 7 of us as well.","As you interact with us, we will learn to choose the best PopBot for you.", "Okay?"]]}, next_id=5)
     bot_texts[7][5] = Reply(bot_id=7, response_id=5, texts={modes.GENERAL:[["Remember that we are just bots and we can be …uh… pretty silly. 🤪🤪🤪🤪", "At any point, you can type \"/switch\" to have a conversation with a new bot.", "Also, we are not made to handle serious mental problems. Please talk to a therapist for those situations or call 911 if it is an emergency.", "Capeesh?😉"]]}, next_id=config.CLOSING_INDEX)
+    bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Let’s get started! 🎉🎉🎉 Type \"Hi\" to start the conversation with one of us."]]}, next_id=None)
+    
+
     # tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
     #             "We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
     #             "We will also ask some questions about how helpful we are. We want you to answer as honestly as you can because it will help us to learn and improve. ",
@@ -340,9 +343,15 @@ def get_response_dict():
     #bot_texts[7][2] = Reply(bot_id=7, response_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     
-    bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot would you like to talk to?"]]}, next_id=4)
-    bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[["Ok. Let me introduce you to my friend."]]}, next_id=None)
-    bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, response_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Let’s get started! 🎉🎉🎉 Type \"Hi\" to start the conversation with one of us."]]}, next_id=None)
+    bot_texts[7][6] = Reply(bot_id=7, response_id=6, texts={modes.GENERAL:[
+                ["Hi {name}. What\'s a recent situation that has been stressing you out?"],
+                ["Hi {name}. What\'s stressing you out right now?"],
+                ["Hi {name}. What\'s on your mind that is stressing you out?"],
+                ["Hi {name}. What\'s something that\'s on your mind that is stressing you out?"]
+
+                ]}, next_id=4)
+    bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Is there a bot you want to talk to?"]]}, next_id=4)
+    bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[["Got it! Switching bots!"], ["Roger! Switching bots!"],["Roger! Switching bots! (You can always type /switch to change bots again.)"]]}, next_id=None)
 
 
     #---------------------------------------------------------------------------------------------------------------------------------

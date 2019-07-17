@@ -133,82 +133,92 @@ class TelegramBot():
             self.update_id = update.update_id + 1
             if update.message and update.message.text: #ignores all non-text inputs
                 user_id = update.message.chat_id
-                query = update.message.text    
-                
-                ############ Special Cases #######################
-                if re.match(r'/start', query): #restart
-                    self.log_action(user_id, None, None, "RESET", "")
-                    self.save_history_to_database(user_id)
-                    self.user_history.pop(user_id, None)
-                    self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
-                    subj_id = re.findall(' ([0-9]+)', query)
-                    if subj_id:
-                        self.set_subj_id(user_id, int(subj_id[0]))
-                    self.set_choice(user_id)
+                query = update.message.text 
+                self.process_message(user_id, query)  
+                    
+    def process_message(self, user_id, query):
+        ############ Special Cases #######################
+        if re.match(r'/start', query): #restart
+            self.log_action(user_id, None, None, "RESET", "")
+            self.save_history_to_database(user_id)
+            self.user_history.pop(user_id, None)
+            self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
+            subj_id = re.findall(' ([0-9]+)', query)
+            if subj_id:
+                self.set_subj_id(user_id, int(subj_id[0]))
+            self.set_choice(user_id)
 
-                elif self.conversation_timeout(user_id): #Time out
-                    self.log_action(user_id, None, None, "TIMEOUT", "")
-                    self.save_history_to_database(user_id)
-                    self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
-                    self.user_history.pop(user_id, None)
-                    self.user_bot_state_dict.pop(user_id, None)
+        elif self.conversation_timeout(user_id): #Time out
+            self.log_action(user_id, None, None, "<TIMEOUT>", "")
+            self.save_history_to_database(user_id)
+            self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
+            self.user_history.pop(user_id, None)
+            self.user_bot_state_dict.pop(user_id, None)
 
-                elif re.match(r'/switch', query): #switch
-                    self.log_action(user_id, None, None, "SWITCH", "")
-                    self.save_history_to_database(user_id)
-                    self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
-                    self.user_history.pop(user_id, None)
-                    self.user_bot_state_dict.pop(user_id, None)
+        elif re.match(r'/switch', query): #switch
+            self.log_action(user_id, None, None, "<SWITCH>", "")
+            self.save_history_to_database(user_id)
+            self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
+            self.user_history.pop(user_id, None)
+            self.user_bot_state_dict.pop(user_id, None)
 
-                ############ Normal Cases #######################
+        ############ Normal Cases #######################
+        bot_id, response_id = self.get_next(user_id, query)
+        
+        if response_id == None: #End of conver <CONVERSATION_END>"
+            self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
+            self.save_history_to_database(user_id)
+            self.user_history.pop(user_id, None)
+            self.user_parameters_dict[user_id]['last']=bot_id
+            if find_keyword(query, self.config.GREETINGS): #the user activates another bot
+                self.user_bot_state_dict[user_id] = (None, None)
                 bot_id, response_id = self.get_next(user_id, query)
-                
-                if response_id == None: #End of conver <CONVERSATION_END>"
-                    self.log_action(user_id, bot_id, response_id, text_response, query)
-                    self.save_history_to_database(user_id)
-                    self.user_history.pop(user_id, None)
-                    self.user_parameters_dict[user_id]['last']=bot_id
-                    if find_keyword(query, self.config.GREETINGS): #the user activates another bot
-                        self.user_bot_state_dict[user_id] = (None, None)
-                        bot_id, response_id = self.get_next(user_id, query)
-                    else:
-                        self.user_bot_state_dict.pop(user_id, None)
-                #extract names
-                #if bot_id == 7 and response_id == self.config.CLOSING_INDEX:
-                if bot_id == 7 and response_id == 2:
-                    name = find_name(query)
-                    self.user_name_dict[user_id] = name
-                    self.db.user_history.update_one({'user_id':user_id}, {'$set':{'user_name': name}},
-                                     upsert=True)
-                
-                #Set custom keyboard (defaults to none)
-                reply_markup = telegram.ReplyKeyboardRemove()
-                
-                #show choices
-                if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
-                    bots_keyboard = self.bots_keyboard
-                    reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)               
+            else:
+                self.user_bot_state_dict.pop(user_id, None)
+        #extract names
+        if bot_id == 7 and response_id == 2:
+            name = find_name(query)
+            self.user_name_dict[user_id] = name
+            self.db.user_history.update_one({'user_id':user_id}, {'$set':{'user_name': name}},
+                             upsert=True)
+        
+        #Set custom keyboard (defaults to none)
+        reply_markup = telegram.ReplyKeyboardRemove()
+        
+        #show choices
+        if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
+            bots_keyboard = self.bots_keyboard
+            reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)               
 
-                if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX}:
-                    reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
-                
-                #select bot
-                if bot_id == 7 and response_id == 4:
-                    bot_choice = self.params.bot2id.get(query, None)
-                    #reply_markup = telegram.ReplyKeyboardRemove()
-                    if type(bot_choice) == int:
-                        bot_id  = bot_choice
-                    else:
-                        last = self.user_parameters_dict[user_id].get('last', None)
-                        bot_id = self.recommend_bot(last)
-                    response_id = self.config.OPENNING_INDEX
+        if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX}:
+            reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
+        
+        #select bot
+        if bot_id == 7 and response_id == 4:
+            self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+            bot_choice = self.params.bot2id.get(query, None)
+            #reply_markup = telegram.ReplyKeyboardRemove()
+            if type(bot_choice) == int:
+                bot_id  = bot_choice
+            else:
+                last = self.user_parameters_dict[user_id].get('last', None)
+                bot_id = self.recommend_bot(last)
+            response_id = self.config.OPENNING_INDEX
 
-                #handle images
-                if self.params.MODE == Modes.TEXT and response_id == self.config.OPENNING_INDEX:
-                    img = open('img/{}.png'.format(bot_id), 'rb')
-                    self.bot.send_photo(chat_id=user_id, photo=img)
-                #handle text responses
-                self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+        #handle images
+        if self.params.MODE == Modes.TEXT and response_id == self.config.OPENNING_INDEX:
+            img = open('img/{}.png'.format(bot_id), 'rb')
+            self.bot.send_photo(chat_id=user_id, photo=img)
+        
+
+        #handle text responses
+        self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+
+
+
+        #To skip 
+        if bot_id == 7 and response_id == 4:
+            self.process_message(user_id, "<SKIP>")
 
     def set_subj_id(self, user_id:int, subject_id:int):
         """
@@ -318,11 +328,13 @@ class TelegramBot():
         #get current id
         (bot_id, response_id) = self.user_bot_state_dict[user_id]
         if bot_id == None and response_id == None:
+            return 7, 6
+
+        if bot_id == 7 and response_id == 6:
             if self.user_parameters_dict[user_id].get('choice_enabled', False): #go to choice selection
                 return 7, 3
             else:
-                last = self.user_parameters_dict[user_id].get('last', None)
-                (bot_id, response_id) = (self.recommend_bot(last), self.config.START_INDEX)
+                return 7, 4
         next = self.reply_dict[bot_id][response_id].next_id
         if not next:
             next_id = None
@@ -429,7 +441,7 @@ class TelegramBot():
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
-    f = open('token_test.txt')
+    f = open('token.txt')
     token = f.read()
     bot = TelegramBot(token)
     bot.run()
