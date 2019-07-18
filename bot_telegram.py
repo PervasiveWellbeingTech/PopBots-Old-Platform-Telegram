@@ -162,9 +162,12 @@ class TelegramBot():
             self.user_history.pop(user_id, None)
             self.user_bot_state_dict.pop(user_id, None)
 
+        
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
-        
+       
+        self.user_parameters_dict[user_id]['choice_enabled'] = False
+
         if response_id == self.config.CLOSING_INDEX:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
             self.save_history_to_database(user_id)
@@ -187,6 +190,10 @@ class TelegramBot():
         #Set custom keyboard (defaults to none)
         reply_markup = telegram.ReplyKeyboardRemove()
         
+        #get problem
+        if  (bot_id == 7 and response_id == 4 and not self.user_parameters_dict[user_id].get('choice_enabled', False)) or (bot_id == 7 and response_id == 3 and  self.user_parameters_dict[user_id].get('choice_enabled', False)):
+            self.user_problem_dict[user_id] = find_problem(query)
+
         #show choices
         if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
             bots_keyboard = self.bots_keyboard
@@ -206,6 +213,7 @@ class TelegramBot():
                 last = self.user_parameters_dict[user_id].get('last', None)
                 bot_id = self.recommend_bot(last)
             response_id = self.config.OPENNING_INDEX
+
 
         #handle images
         if self.params.MODE == Modes.TEXT and response_id == self.config.OPENNING_INDEX:
