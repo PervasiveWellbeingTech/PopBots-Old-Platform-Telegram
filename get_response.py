@@ -341,10 +341,10 @@ def get_response_dict():
     #bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
     
     bot_texts[7][6] = Reply(bot_id=7, response_id=6, texts={modes.GENERAL:[
-                ["Hi {name}. What\'s a recent situation that has been stressing you out?"],
-                ["Hi {name}. What\'s stressing you out right now?"],
-                ["Hi {name}. What\'s on your mind that is stressing you out?"],
-                ["Hi {name}. What\'s something that\'s on your mind that is stressing you out?"]
+                ["Hi {name}. Thank's for contacting us again.","What\'s a recent situation that has been stressing you out?"],
+                ["Hi {name}. Thank's for contacting us again.","What\'s stressing you out right now?"],
+                ["Hi {name}. Thank's for contacting us again.","What\'s on your mind that is stressing you out?"],
+                ["Hi {name}. Thank's for contacting us again.","What\'s something that\'s on your mind that is stressing you out?"]
 
                 ]}, next_id=4)
     bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Is there a bot you want to talk to?"]]}, next_id=4)

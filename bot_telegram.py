@@ -15,7 +15,7 @@ import re
 
 from collections import defaultdict
 #from os import system
-from utils import Params, Config, Modes, find_keyword, find_name, find_id
+from utils import Params, Config, Modes, find_keyword, find_name, find_id, find_problem
 from get_response import get_response_dict
 from pymongo import MongoClient
 import telegram
@@ -209,6 +209,10 @@ class TelegramBot():
 
         #handle images
         if self.params.MODE == Modes.TEXT and response_id == self.config.OPENNING_INDEX:
+            img = open('img/{}.png'.format(bot_id), 'rb')
+            self.bot.send_photo(chat_id=user_id, photo=img)
+
+        if bot_id == 7 and response_id == 6:
             img = open('img/{}.png'.format(bot_id), 'rb')
             self.bot.send_photo(chat_id=user_id, photo=img)
         
