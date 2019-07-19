@@ -164,7 +164,6 @@ class TelegramBot():
             self.user_history.pop(user_id, None)
             self.user_bot_state_dict[user_id] = (7,7)
 
-        self.user_parameters_dict[user_id]['choice_enabled'] = False
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
 
