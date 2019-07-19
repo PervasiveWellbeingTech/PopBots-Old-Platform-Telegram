@@ -192,7 +192,9 @@ class TelegramBot():
         
         #get problem
         if  (bot_id == 7 and response_id == 4 and not self.user_parameters_dict[user_id].get('choice_enabled', False)) or (bot_id == 7 and response_id == 3 and  self.user_parameters_dict[user_id].get('choice_enabled', False)):
-            self.user_problem_dict[user_id] = find_problem(query)
+            problem = find_problem(query)
+            if problem:
+                self.user_problem_dict[user_id] = problem
 
         #show choices
         if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
@@ -227,8 +229,6 @@ class TelegramBot():
 
         #handle text responses
         self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
-
-
         #To skip 
         if bot_id == 7 and response_id == 4:
             self.process_message(user_id, "<SKIP>")
@@ -320,7 +320,7 @@ class TelegramBot():
             (list) -- list of strings the responses 
         """
         name = self.user_name_dict.get(user_id, '')
-        problem = self.user_problem_dict.get(user_id, 'your problem')
+        problem = self.user_problem_dict.get(user_id, 'that')
         bot_name = self.params.bot_name_list[bot_id]
         subject_id = self.ids[user_id]
         for res in responses:
