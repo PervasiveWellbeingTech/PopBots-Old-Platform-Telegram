@@ -162,9 +162,9 @@ class TelegramBot():
             self.save_history_to_database(user_id)
             self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             self.user_history.pop(user_id, None)
-            self.user_bot_state_dict[user_id] = (7,3)
+            self.user_bot_state_dict[user_id] = (7,7)
 
-        
+        self.user_parameters_dict[user_id]['choice_enabled'] = False
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
 
@@ -344,7 +344,7 @@ class TelegramBot():
         if bot_id == None and response_id == None:
             return 7, 6
 
-        if bot_id == 7 and response_id == 6:
+        if bot_id == 7 and (response_id == 6 or response_id == 8):
             if self.user_parameters_dict[user_id].get('choice_enabled', False): #go to choice selection
                 return 7, 3
             else:
