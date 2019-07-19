@@ -77,7 +77,7 @@ class TelegramBot():
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict, self.ids = self.load_parameters(self.db.user_history)
 
-        keyboards =[telegram.InlineKeyboardButton("Choose for me.")]+[
+        keyboards =[telegram.InlineKeyboardButton("Choose for me")]+[
                                 telegram.InlineKeyboardButton(name) for idx, name in enumerate(self.params.bot_name_list) if idx not in {4,7}]
         self.bots_keyboard = [ [x,y] for x,y in zip(keyboards[0::2], keyboards[1::2]) ]
         if len(keyboards)%2 ==1:
@@ -147,6 +147,7 @@ class TelegramBot():
             if subj_id:
                 self.set_subj_id(user_id, int(subj_id[0]))
             self.set_choice(user_id)
+            self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out
             self.log_action(user_id, None, None, "<TIMEOUT>", "")
@@ -154,19 +155,18 @@ class TelegramBot():
             self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             self.user_history.pop(user_id, None)
             self.user_bot_state_dict.pop(user_id, None)
+            self.user_problem_dict.pop(user_id, None)
 
         elif re.match(r'/switch', query): #switch
             self.log_action(user_id, None, None, "<SWITCH>", "")
             self.save_history_to_database(user_id)
             self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             self.user_history.pop(user_id, None)
-            self.user_bot_state_dict.pop(user_id, None)
+            self.user_bot_state_dict[user_id] = (7,3)
 
         
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
-       
-        self.user_parameters_dict[user_id]['choice_enabled'] = False
 
         if response_id == self.config.CLOSING_INDEX:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
@@ -229,10 +229,10 @@ class TelegramBot():
         self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
 
 
-
         #To skip 
         if bot_id == 7 and response_id == 4:
             self.process_message(user_id, "<SKIP>")
+
 
     def set_subj_id(self, user_id:int, subject_id:int):
         """
