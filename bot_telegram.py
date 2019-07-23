@@ -159,6 +159,7 @@ class TelegramBot():
 
         elif re.match(r'/switch', query): #switch
             self.log_action(user_id, None, None, "<SWITCH>", "")
+            self.user_parameters_dict[user_id]['switch'] = True
             self.save_history_to_database(user_id)
             self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             self.user_history.pop(user_id, None)
@@ -166,6 +167,7 @@ class TelegramBot():
 
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
+        choice = self.user_parameters_dict[user_id].get('choice_enabled', False)
 
         if response_id == self.config.CLOSING_INDEX:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
@@ -189,18 +191,20 @@ class TelegramBot():
         #Set custom keyboard (defaults to none)
         reply_markup = telegram.ReplyKeyboardRemove()
         
+        
         #get problem
-        if  (bot_id == 7 and response_id == 4 and not self.user_parameters_dict[user_id].get('choice_enabled', False)) or (bot_id == 7 and response_id == 3 and  self.user_parameters_dict[user_id].get('choice_enabled', False)):
+        if  ((bot_id == 7 and response_id == 4 and not choice) or (bot_id == 7 and response_id == 3 and choice))\
+                and not self.user_parameters_dict[user_id].get('switch', False):
             problem = find_problem(query)
             if problem:
                 self.user_problem_dict[user_id] = problem
 
         #show choices
-        if  bot_id == 7 and response_id == 3 and self.user_parameters_dict[user_id].get('choice_enabled', False):
+        if  bot_id == 7 and response_id == 3 and choice:
             bots_keyboard = self.bots_keyboard
             reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)               
 
-        if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX}:
+        if response_id in {self.config.CLOSING_INDEX, self.config.ABRUPT_CLOSING_INDEX} or (bot_id == 7 and response_id == 9):
             reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
         
         #select bot
@@ -340,10 +344,13 @@ class TelegramBot():
         """
         #get current id
         (bot_id, response_id) = self.user_bot_state_dict[user_id]
+        if response_id == self.config.QUESTION_INDEX and self.user_parameters_dict[user_id].get('switch', False):
+            self.user_parameters_dict[user_id].pop('switch', None)
+            return 7, 8
         if bot_id == None and response_id == None:
             return 7, 6
 
-        if bot_id == 7 and (response_id == 6 or response_id == 8):
+        if bot_id == 7 and (response_id == 6 or response_id == 7):
             if self.user_parameters_dict[user_id].get('choice_enabled', False): #go to choice selection
                 return 7, 3
             else:

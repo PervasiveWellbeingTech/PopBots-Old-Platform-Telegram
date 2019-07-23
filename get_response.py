@@ -352,7 +352,8 @@ def get_response_dict():
     bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[["Got it! Switching bots!"], ["Roger! Switching bots!"],["Roger! Switching bots! (You can always type /switch to change bots again.)"]]}, next_id=None)
 
     bot_texts[7][7] = Reply(bot_id=7, response_id=7, texts={modes.GENERAL:[[""]]}, next_id=8)
-    bot_texts[7][8] = Reply(bot_id=8, response_id=8, texts={modes.GENERAL:[["We are sorry that you had to switch bots. Could you tell us why?"]]}, next_id=4)
+    bot_texts[7][8] = Reply(bot_id=7, response_id=8, texts={modes.GENERAL:[["You seem to have switched bots in the past conversation. Could you tell us why?"]]}, next_id=9)
+    bot_texts[7][9] = Reply(bot_id=7, response_id=9, texts={modes.GENERAL:closing}, next_id=None)
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
