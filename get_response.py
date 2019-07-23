@@ -207,7 +207,7 @@ def get_response_dict():
     ## Positive thinking bot
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name}", "What is it about the situation that is making you feel stressed?"]]
+    tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name}", "What is it about {problem} that is making you feel stressed?"]]
     # tmp_text[topics.TRAFFIC] = [["Could you give me more detail on the traffic is today?"]]
     # tmp_text[topics.TIRED] = [["How do you feel your tiredness is adding to your stress level?"]]
     # tmp_text[topics.LATE] = [["Can you give me more detail on the event you are late to"]]
@@ -240,7 +240,7 @@ def get_response_dict():
 
     #---------------------------------------------------------------------------------------------------------------------------------
     ## Humor bot
-    bot_texts[3][config.OPENNING_INDEX] = Reply(bot_id=3, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Give me more deets about this situation!"]]}, next_id=1)
+    bot_texts[3][config.OPENNING_INDEX] = Reply(bot_id=3, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Give me more deets about {problem}!"]]}, next_id=1)
     bot_texts[3][1] = Reply(bot_id=3, response_id=1, texts={modes.GENERAL:[["Thank you for sharing", "That does sound stressful", "Ok, let\'s try looking at this situation in a different light", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
     bot_texts[3][7] = Reply(bot_id=3, response_id=7, texts={modes.GENERAL:[["Go for it!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
     bot_texts[3][2] = Reply(bot_id=3, response_id=2, texts={modes.GENERAL:[["For example, if you are hungry, and you are stuck in traffic", "This might be a good joke", "Why do French people eat snails?", "Because they don\'t like fast food", "Don\'t worry about it being the best joke, just find something humorous about your situation", "Share your joke with me!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
@@ -252,7 +252,7 @@ def get_response_dict():
 
     #---------------------------------------------------------------------------------------------------------------------------------
     ## relaxation bot
-    bot_texts[4][config.OPENNING_INDEX] = Reply(bot_id=4, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Tell me more details about this situation"]]}, next_id=1)
+    bot_texts[4][config.OPENNING_INDEX] = Reply(bot_id=4, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Tell me more details about {problem}"]]}, next_id=1)
     bot_texts[4][1] = Reply(bot_id=4, response_id=1, texts={modes.GENERAL:[["I have a couple strategies to help you feel better", "Say yes if you would rather do a visualization", "Say no if you want to focus on your breathing",  "If you don\'t know which activity you want to do, you can also say no preference and I can decide for you"]]}, next_id=[(('no preference', 'both'), random.randint(2,3)), (('no', ), 3), (('yes', ), 2)])
 
     bot_texts[4][2] = Reply(bot_id=4, response_id=2, texts={modes.GENERAL:[["Ok, {name}, let\'s do a visualization activity", "I\'d like you to imagine of any place that makes you feel happy or calm", "Think of all the details, as vivid of a picture as you can imagine", "Think of your senses: the sights, the smells, the sounds"], ["Picture a time when you felt at peace. What was around you in this time?", "What did it feel like?", "What do you see, smell or hear?", "Let me know when you are done with your visualization"]]}, next_id=4)
@@ -350,6 +350,7 @@ def get_response_dict():
 
     bot_texts[7][3] = Reply(bot_id=7, response_id=3, texts={modes.GENERAL:[["Which bot do you want to talk to?"]]}, next_id=4)
     bot_texts[7][4] = Reply(bot_id=7, response_id=4, texts={modes.GENERAL:[["Got it! Switching bots!"], ["Roger! Switching bots!"],["Roger! Switching bots! (You can always type /switch to change bots again.)"]]}, next_id=None)
+    bot_texts[7][10] = Reply(bot_id=7, response_id=10, texts={modes.GENERAL:[["Hmm... What about this one?"], ["Hmm... How about this bot?"],["Hmm... What about this one? (You can always type /switch to change bots again.)"]]}, next_id=None)
 
     bot_texts[7][7] = Reply(bot_id=7, response_id=7, texts={modes.GENERAL:[[""]]}, next_id=8)
     bot_texts[7][8] = Reply(bot_id=7, response_id=8, texts={modes.GENERAL:[["You seem to have switched bots in the past conversation. Could you tell us why?"]]}, next_id=9)

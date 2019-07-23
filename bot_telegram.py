@@ -208,7 +208,7 @@ class TelegramBot():
             reply_markup = telegram.ReplyKeyboardMarkup([[telegram.InlineKeyboardButton("Hi")]], resize_keyboard= True)
         
         #select bot
-        if bot_id == 7 and response_id == 4:
+        if bot_id == 7 and (response_id == 4 or response_id == 10):
             self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
             bot_choice = self.params.bot2id.get(query, None)
             #reply_markup = telegram.ReplyKeyboardRemove()
@@ -234,6 +234,9 @@ class TelegramBot():
         self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
         #To skip 
         if bot_id == 7 and response_id == 4:
+            self.process_message(user_id, "<SKIP>")
+
+        if bot_id == 2 and (response_id == 3 or response_id == 4):
             self.process_message(user_id, "<SKIP>")
 
 
@@ -323,7 +326,7 @@ class TelegramBot():
             (list) -- list of strings the responses 
         """
         name = self.user_name_dict.get(user_id, '')
-        problem = self.user_problem_dict.get(user_id, 'that')
+        problem = self.user_problem_dict.get(user_id, "what\'s stressing you out")
         bot_name = self.params.bot_name_list[bot_id]
         subject_id = self.ids[user_id]
         for res in responses:
@@ -354,7 +357,7 @@ class TelegramBot():
             if self.user_parameters_dict[user_id].get('choice_enabled', False): #go to choice selection
                 return 7, 3
             else:
-                return 7, 4
+                return 7, 10
         next = self.reply_dict[bot_id][response_id].next_id
         if not next:
             next_id = None
