@@ -220,7 +220,7 @@ def get_response_dict():
     bot_texts[2][2] = Reply(bot_id=2, response_id=2, texts={modes.GENERAL:[["Good job finding a positive alternative!", "Is there another positive alternative you can find in your situation?"], ["Great!", "Do you think there is another positive alternative you can find in your situation?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 3)])
     bot_texts[2][3] = Reply(bot_id=2, response_id=3, texts={modes.GENERAL:[["Wonderful! See, you can usually find positives even when in the most negative of situations"], ["Awesome you\'re a great positive thinker!!"]]}, next_id=5)
     bot_texts[2][4] = Reply(bot_id=2, response_id=4, texts={modes.GENERAL:[["That\'s ok! You found some positive to the situation"], ["That\'s alright you did find one positive which is really good"]]}, next_id=5)
-    bot_texts[2][5] = Reply(bot_id=2, response_id=5, texts={modes.GENERAL:[["Positive thinking can be a good way to destress, making it easier to face challenges"], ["When you\'re feeling down about a situation, trying to find the positives can make it easier to handle" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[2][5] = Reply(bot_id=2, response_id=5, texts={modes.GENERAL:[["Positive thinking can be a good way to destress, making it easier to face challenges", "Sounds good?"], ["When you\'re feeling down about a situation, trying to find the positives can make it easier to handle" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
 
     tmp_text = {}
