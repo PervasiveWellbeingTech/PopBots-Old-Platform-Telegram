@@ -326,7 +326,7 @@ class TelegramBot():
             (list) -- list of strings the responses 
         """
         name = self.user_name_dict.get(user_id, '')
-        problem = self.user_problem_dict.get(user_id, "what\'s stressing you out")
+        problem = self.user_problem_dict.get(user_id, "that")
         bot_name = self.params.bot_name_list[bot_id]
         subject_id = self.ids[user_id]
         for res in responses:
