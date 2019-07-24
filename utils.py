@@ -18,7 +18,7 @@ import re
 #from fbchat.models import *
      
 from collections import *
-r = Rake(punctuations=',\'\"?~`.!#$%^*()')
+r = Rake(punctuations=',\'\"?~`.!#$%^*()’<>\\|+-')
 
 class Params:
     def __init__(self, bot_num=9, sleeping_time=2, abtest_choice=-1, bot_choice=-1):
