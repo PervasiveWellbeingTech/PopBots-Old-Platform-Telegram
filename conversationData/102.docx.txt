@@ -1,0 +1,65 @@
+﻿Day 1
+P: Hi [name], I’m PopBot.
+I’m here to help you deal with your stress.
+Can you tell me a little bit about a recent event that is stressing you out?
+U: I am worrying about finding a coherent topic for a research paper that I want to get published.
+P: Ok, can you give me more detail about your paper?
+U: It doesn’t have a clear direction yet so I’m worried it may not be able to offer any value
+P: Ok, let’s see how bad this problem is. Is it really that big? Would others think so?
+U: Pretty big since the deadline is coming soon
+P: If you could solve this problem, would your life improve?
+U: Yes I would receive more credits as a CS student
+P: Ok, now, recall past problems that you were able to solve. Could a similar solution work for this problem, too?
+U: No this is the first time I have encountered this problem
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: the main problem comes down to finding a connection among those ideas and now i’m still trying to do that
+P: Do you realistically think this solution will solve the problem? Any other ideas? - Be creative… zazy ideas are welcome!
+U: maybe i can try looking into related papers and find new directions
+P: What are other possible positive and negative consequences of this strategy?
+U: the result is uncertain but i can at least know about this area
+P: Finally, do you have the resources and, more importantly, the will to carry out your plan?
+U: time constraint is a real problem but i will try my best
+P: What else might go wrong? Can you correct this part of the plan?
+U: i learn nothing from the readings
+P: At least you have a plan now
+Go ahead and implement it !
+U: Sure
+P: Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: thanks
+
+
+Day 2
+Intro
+U: I’m stressed out about how to connect the many ideas in my research topic together
+P: Ok, can you give me more detail about your problem
+U: So far we only have a lot of experimental results without theories to back them up
+P: Ok, let’ see how bad this problem is. Is it really that big? Would others think so?
+U: I think it’s not too big but if we can find a way to solve it we can publish a paper and add value to the field
+P: If you could solve this problem, would your life improve?
+U: Yes definitely
+P: Ok, now, recall past problems that you were able to solve. Could a similar solution work for this problem, too?
+U: No this is the first time I have encountered this problem
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: It’s hard for me to know where to start
+P: Do you realistically think this solution will solve the problem? Any other ideas? - Be creative...zazy ideas are welcome!
+U: I don’t have any idea in mind right now
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: No I don’t know how to do that
+P: Coming up with a plan is the first step to solving your problem
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+
+
+Day 3
+Intro
+U: I’m stressed out about finishing my research on time since there are still many experiments to run
+P: Ok, can you give me more detail about your problem
+U: the problem is time constraint. There are still many tasks to do while time is running out
+P: Ok,let’s see how bad this problem is. Is it really that big? Would others think so?
+U: Not really big for others but for me it’s relatively important
+P: If you could solve this problem would your life improve?
+U: Yeah I will have more value-added results to present to others
+P: Ok, now, recall past problems that you were able to  solve. Could a similar solution work for this problem too?
+U: No. This is the first time I encountered this problem
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: I don’t think so. Time is the only thing i need and there is not much I can do
+P: Coming up with a plan is the first step to solving the problem. Thank you for sharing with me. I hope I have been able to help. Havea nice day!

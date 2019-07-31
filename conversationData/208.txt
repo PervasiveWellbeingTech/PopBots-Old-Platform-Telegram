@@ -1,0 +1,55 @@
+﻿Day 1 
+Intro
+U: I had a project that I need to make it work
+P: Ok, can you give me more detail about this event?
+U: we need the feature to work within a short time frame
+P: I see how that can be stressful.
+I want you to take a couple minutes and write at least one positive aspect about your situation.
+Let me know when you are done.
+U: I had colleagues with whom I can discuss some technical challenges
+P: Is there another positive you can find in your situation?
+U: I was sort of having uninterrupted work time during most weekdays so that I can concentrate on the task 
+P: See you can usually find positives even when in the most negative of situations.
+Positive thinking can be a good way to destress, making it easier to face challenges.
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+
+
+Day 2
+Intro
+U: I have multiple tasks I need to finish
+P: Ok, can you give me more detail about your tasks
+U: several tasks from work and some other things in life I need to deal with
+P: Ok, let’ see how bad this problem is. Is it really that big? Would others think so?
+U: it
+it’s hard to say if it is big. they are just important so it’s better I deal with them well
+P: If you could solve this problem, would your life improve?
+U: I would only say if I solve this problem, it will prevent getting unpleasant consequences in life
+P: Ok, now, recall past problems that you were able to solve. Could a similar solution work for this problem, too?
+U: probably
+P: Do you realistically think this solution will solve the problem? Any other ideas? - Be creative...zazy ideas are welcome!
+U: which solution
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: fix a debug in my code..
+P: Good you have a plan now! Go ahead and implement it.
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: thank you
+
+
+Day 3
+Intro
+U: One algorithm we worked on for a long time was discovered to have major flaws
+P: Ok, can you give me more details on why that is stressing?
+U: The problem is challenging and I need to fix it as soon as possible,
+P: Hmm I see..
+Let me ask you something, what is the worst possible outcome?
+U: Are you really a bot
+P: Sorry I didn’t get that
+U: Are you a robot?
+P: Let me ask you something, what is the worst possible outcome?
+U: Our demonstration does not work
+P: Ok, on a scale of 1 to 10, with 1 being almost impossible, how likely is this scenario?
+U: 5
+P: In that case, what could you do to get back on track if it does happen
+U: probably need to work overtime to fix it
+P: See you have a plan B. Just remember that if you’re stressing that there is always a way to get back on your feet. Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: thank you

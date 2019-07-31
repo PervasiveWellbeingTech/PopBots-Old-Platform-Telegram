@@ -1,0 +1,70 @@
+﻿Day 1
+Intro
+U: Nice to hear
+Last time, I was driving my car
+P: Ok, can you give me more detail about your problem
+U: I did not know where I had to go
+P: Ok, let’ see how bad this problem is. Is it really that big? Would others think so?
+U: So I missed the exit
+I don’t think others would say so
+P: Seems this is not a problem worth worrying about. Do you still want to work on it?
+U: It’s pretty common
+Yes
+P: Ok, now, recall past problems that you were able to solve. Could a similar solution work for this problem, too?
+U: Because it happens often
+I usually try to breathe slowly
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: How could I possibly break it down?
+P: Coming up with a plan is the first step to solving a problem.
+U: So?
+P: Are you sure there’s nothing you can do to help solve your problem?
+U: I mean, I could probably try to train on less stressful situations first, and then ramp it up
+P: Good, you have a plan now! Go ahead and implement it.
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: Thank you, you too
+
+
+
+
+Day 2
+Intro
+U: I am currently working on a project and I have to be done by Friday
+P: Ok, can you give me more detail about your problem
+U:I have a number of tasks I need to complete before Friday, and I don’t think I have the time to do everything before then
+P: Ok, let’s see how bad this problem is. Is it really that big? Would others think so?
+U: Yes, because it is my job, and my boss might be judging me negatively if I don’t manage to finish everything on time
+P: If you could solve this problem, would your life improve?
+U: Yes, I would feel proud of myself, and less stressed about my work. I also think my boss would have a better opinion about me, and that would make my selfesteem go up.
+P: Ok, now, recall past problems that you were able to solve. Could a similar solution work for this problem, too?
+U: No, I’ve never had similar problems
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: No, everything is so big. I think I just want to quit it all. It made me consider suicide, so I should probably stop before it is too late.
+P: Are you sure there’s nothing you can do to help solve your problem?
+U: I don’t know if I’m capable to do all this..
+P: Coming up with a plan is the first step to solving your problem
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+
+
+
+
+Day 3
+Intro
+U: Last time, I had to take an exam for my class.
+P: Ok, can you give me more detail about your problem
+U: The exam was the final exam of the course, and I had to get at least 80% right to be able to pass the class, so it stressed me out and prevented me from reviewing the materials the way I usually do
+P: Ok,let’s see how bad this problem is. Is it really that big? Would others think so?
+U: Yes, all the students feel the same about final exam, especially for the class
+P: If you could solve this problem would your life improve?
+U: not really, but it would have been easier for me to study and take the exam
+P: Seems this is not a problem worth worrying about. Do you still want to work on it?
+U: yes, because it made me feel really bad
+P: Ok, now, recall past problems that you were able to  solve. Could a similar solution work for this problem too?
+U: I tried to do relaxation techniques and yoga, as I usually do, but every time I would start studying again, the stress would be back, even bigger than before as the solutions I tried to remove it did not work.
+P: Perhaps you should break down the problem. Could you identify a piece of your problem and a simple solution for it?
+U: There are different chapters I needed to review for the exam, maybe taking them one at a time could have helped me
+P: Do you realistically think this solution will solve the problem? Any other ideas? - Be creative.. zazy ideas are welcome!
+U: Or maybe i should have taken some recreational drugs to relax, before studying
+P: Finally, do you have the resources and, more importantly, the will to carry out your plan?
+U: Yes, I really wanted to pass this class, and I am a hard worker
+P: Good, you have a plan now! Go ahead and implement it.
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!

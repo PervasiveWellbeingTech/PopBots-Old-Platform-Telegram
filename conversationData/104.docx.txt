@@ -1,0 +1,49 @@
+﻿Day 1
+U: hi
+P: Intro
+U: I’m slightly stressed about accomplishing something meaningful before my internship is over.
+P: Ok, can you give me more detail about your problem
+U: Well the first few weeks I spend mostly understanding how everything worked, and not really contributing. Since then I have attempted to contribute in a meaningful way but I’ve only hit dead ends.
+P: Ok, let’s see how bad this problem is. Is it really that big? Would others think so?
+U: It’s really not that big of a deal, I mean everyone says that this is how research works but at the same time, these people have done amazing things.
+P: If you could solve this problem, would your life improve?
+U: Yes, but not to a great exent.
+*extent
+P: Seems like this is not a problem worth worrying about. Do you still want to work on it?
+U: No, I realize its not a big deal and not worth worrying about.
+P: Cool, enjoy the rest of the day!
+U: Bye
+
+
+Day 2
+U: hi
+P: Intro
+U: I am slightly stressed about whether to continue working when the school year starts.
+P: Ok, can you give me more detail about your problem
+U: I’ve been offered the opportunity to continue my paid internship when the school year starts but taking it would require taking on a heavy workload.
+P: Ok, let’s see how bad this problem is. Is it really that big? Would others think so?
+U: I’d really not, and others would agree on that.
+P: Seems like this is not a problem worth worrying about. Do you still want to work on it?
+U: Sure
+P: Ok, now, recall past problems that you were able to solve. Coulda similar solution work for this problem, too?
+U: Last time I was in this situation, I made the wrong choice of taking on a heavier workload.
+P: Do you realistically think this solution will solve the problem? Any other ideas? - Be creative...zazy ideas are welcome!
+U: Well there really are only two options, and both have their pros and cons
+P: Finally, do you have the resources and, more importantly, the will to carry out your plan?
+U: Ues
+P: Good, you have a plan now! Go ahead and implement it. Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: Bye
+
+
+Day 3
+U: hi PopBot
+P: Intro
+U: The fact that I haven’t really done anything during my internship and I have to present what I did in a couple weeks.
+P: Ok, can you give me more detail about your problem
+U: Yes, I haven’t contributed anything meaningful to my project and the end of my internship is coming up.
+P: Ok, let’s see how bad this problem is. Is it really that big? Would others think so?
+U: No, I think others would recommend making an effort to accomplishing something in these last two weeks.
+P: Seems like this is not a problem worth worrying about. Do you still want to work on it?
+U: NO
+P: Cool, enjoy the rest of the day!
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!

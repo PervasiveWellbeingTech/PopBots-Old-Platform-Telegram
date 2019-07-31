@@ -1,0 +1,59 @@
+﻿P: Intro
+U: Work is rough, I guess.
+P: Ok, can you give me more detail about work?
+U: It’s been a lot of coding
+P: I see how that can be stressful.
+I want you to take a couple minutes and write at least one positive aspect about your situation.
+U: Ok
+P: Let me know when you are done.
+U: I’m done
+P: Could you share something you wrote with me?
+U: I said that it’s been a good learning experience
+P: Is there another positive you can find in your situation?
+U: $$$
+P: See, you can usually find positives even when in the most negative of situations.
+Positive thinking can be a good way to destress, making it easier to face challenges.
+Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: Thanks
+
+
+Day 2
+Intro
+U: I have no idea how to fix my code
+P: Ok, can you give me more detail about your problem
+U: It’s reading bytes I think but not recording them
+P: Ok, let’s see how bad this problem is. Is it really that big? Would others think so?
+U: I mean I’m a week and a half behind
+P: If you could solve this problem, would your life improve?
+U: Yes
+P: Ok, now, recall past problems that you were able to solve. Could a similar solution work for this problem, too?
+U: Uh
+U: At least in the short term
+U: Maybe?
+P: Do you realistically think this solution will solve the problem? Any other ideas? - Be creative...zazy ideas are welcome!
+U: wtf does “zazy” mean PopBot2
+P: Finally, do you have the resources and, more importantly, the will to carry out your plan?
+U: I mean I guess, it’s not like I have anything else to do at work.
+P: Good, you have a plan now ! Go ahead and implement it. Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: Thanks PopBot2!
+U: are you still there?
+
+
+
+
+Day 3
+Intro
+U: Idk how to fix a problem I have with my code
+P: Can you give me more details on why that is stressing?
+U: I’ve already spent like 2 weeks on this program and I’m almost done but I can’t wrap it up until I figure this out
+P: Hmm I see…
+Let me ask you something, what is the worst possible outcome of this situation
+U: 1. Your grammar is kinda off B. 2. Worst case scenario I waste more time and barely make any progress with my project and have to refund the stipend
+P: Ok, on a scale of 1 to 10, with 1 being almost impossible, how likely is this scenario?
+U: like a 3
+P: So would you agree that the worst case situation is unlikely?
+U: I guess, but it’s still troublesome
+P: Seems like you have things in perspective. Try not to spend too much time worrying about scenarios that probably won’t happen.
+U: Ight got it b
+P: Thank you for sharing with me. I hope I have been able to help. Have a nice day!
+U: thanks popbot3
