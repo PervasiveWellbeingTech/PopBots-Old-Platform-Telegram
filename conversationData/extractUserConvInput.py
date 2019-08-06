@@ -3,6 +3,10 @@ import re
 import os
 from gibberish_filter import isGibberish
 
+
+# Extracts information from the scripts in DATA_FOLDER and consolidates them
+# in OUTPUT_FILE
+
 DATA_FOLDER = "conversationData"
 OUTPUT_FILE = "userConvInput.csv"
 

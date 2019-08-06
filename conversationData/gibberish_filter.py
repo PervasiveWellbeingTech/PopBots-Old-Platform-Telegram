@@ -1,11 +1,13 @@
 from nltk.corpus import words
 import re
 
+# Script determines if input text is english
+
 GIBBERISH_THRESHOLD = .60
 
+# Return percentage of English words in txt input
 def pct_English(txt):
     txt = txt.split()
-
     englishCount = 0
     totalCount = 0
     for word in txt:
@@ -15,15 +17,20 @@ def pct_English(txt):
 
     return float(englishCount/totalCount)
 
+def normalizeText(text):
+    text = text.lower()
+    text = re.sub(r'[.?,!]','',text)
+    return text
 
-def isGibberish(txt):
+def isGibberish(txt, threshold = 1):
+    txt = normalizeText(txt)
     englishPtg = pct_English(txt)
     txt = txt.split()
     if len(txt) == 1:
         if englishPtg < 1:
             return True
     else:
-        if englishPtg < GIBBERISH_THRESHOLD:
+        if englishPtg < threshold:
             return True
     return False
 
@@ -37,10 +44,8 @@ if __name__== "__main__":
             print("No input. Try again." + '\n')
             continue
         else:
-            text = text.lower()
-            text = re.sub(r'[.?,!]','',text)
+            text = normalizeText(text)
             #print("---> " + str(pct_English(text)*100) + '% of English words in input.' + '\n')
-
             if isGibberish(text):
                 print("--->[" + text + "] classified as GIBBERISH" + '\n')
             else:
