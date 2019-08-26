@@ -146,7 +146,7 @@ class TelegramBot():
             subj_id = re.findall(' ([0-9]+)', query)
             if subj_id:
                 self.set_subj_id(user_id, int(subj_id[0]))
-            self.set_choice(user_id)
+                self.set_choice(user_id)
             self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out
@@ -291,6 +291,8 @@ class TelegramBot():
             text_response = self.get_text_response(bot_id, response_id)
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
+                self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
+                sleep(len(res)/20)
                 self.bot.send_message(chat_id=user_id, text=res, reply_markup = reply_markup)
             self.log_action(user_id, bot_id, response_id, text_response_format, query)
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
