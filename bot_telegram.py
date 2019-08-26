@@ -62,7 +62,7 @@ class TelegramBot():
 
         #initialize database
         if self.params.MODE == Modes.TEXT:
-            self.db = MongoClient().textbot_telegram
+            self.db = MongoClient().study_Aug_2019  #MongoClient().textbot_telegram
         else:
             self.db = MongoClient().voicebot_telegram
 
@@ -292,7 +292,7 @@ class TelegramBot():
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
                 self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
-                sleep(len(res)/20)
+                sleep(min(len(res)/20,2.5))
                 self.bot.send_message(chat_id=user_id, text=res, reply_markup = reply_markup)
             self.log_action(user_id, bot_id, response_id, text_response_format, query)
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
