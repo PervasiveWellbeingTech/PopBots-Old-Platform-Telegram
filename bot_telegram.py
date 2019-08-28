@@ -168,9 +168,10 @@ class TelegramBot():
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
         choice = self.user_parameters_dict[user_id].get('choice_enabled', False)
+        switch = self.user_parameters_dict[user_id].get('switch', False)
         #print(self.user_history[user_id])
 
-        if response_id == self.config.CLOSING_INDEX:
+        if response_id == self.config.CLOSING_INDEX and not switch:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
             self.save_history_to_database(user_id)
 
