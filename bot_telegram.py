@@ -19,6 +19,8 @@ from utils import Params, Config, Modes, find_keyword, find_name, find_id, find_
 from get_response import get_response_dict
 from pymongo import MongoClient
 import telegram
+from telegram.ext.dispatcher import run_async
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
 
@@ -119,23 +121,25 @@ class TelegramBot():
     #         parameters[hist['user_id']] = hist['user_parameters']
     #     return parameters
 
-    def process_updates(self, bot_updates):
-        """
-        Handles interactions with the Telegram server.
-        Receives all the user replies in the form of updates and tells
-        Telegram what to reply
+    # def process_updates(self, bot_updates):
+    #     """
+    #     Handles interactions with the Telegram server.
+    #     Receives all the user replies in the form of updates and tells
+    #     Telegram what to reply
 
-        Parameters:
-             bot_updates (iterator) -- all updates from bot.get_updates function
-        """
-        # Request updates after the last update_id
-        for update in bot_updates:
-            self.update_id = update.update_id + 1
-            if update.message and update.message.text: #ignores all non-text inputs
-                user_id = update.message.chat_id
-                query = update.message.text 
-                self.process_message(user_id, query)  
+    #     Parameters:
+    #          bot_updates (iterator) -- all updates from bot.get_updates function
+    #     """
+    #     # Request updates after the last update_id
+
+    #     for update in bot_updates:
+    #         self.update_id = update.update_id + 1
+    #         if update.message and update.message.text: #ignores all non-text inputs
+    #             user_id = update.message.chat_id
+    #             query = update.message.text 
+    #             self.process_message(user_id, query) 
                     
+    @run_async
     def process_message(self, user_id, query):
         ############ Special Cases #######################
         if re.match(r'/start', query): #restart
@@ -160,9 +164,9 @@ class TelegramBot():
         elif re.match(r'/switch', query): #switch
             self.log_action(user_id, None, None, "<SWITCH>", "")
             self.user_parameters_dict[user_id]['switch'] = True
-            self.save_history_to_database(user_id)
+            #self.save_history_to_database(user_id)
             self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
-            self.user_history.pop(user_id, None)
+            #self.user_history.pop(user_id, None)
             self.user_bot_state_dict[user_id] = (7,7)
 
         ############ Normal Cases #######################
@@ -451,24 +455,41 @@ class TelegramBot():
                                         {"$push":{'user_history': history}}
                                     )
 
+    
+    def callback_handler(self, bot, update):
+        """
+        Wrapper function to call the message handler
+        """
+        self.process_message(update.message.chat_id, update.message.text)
+        #self.process_updates(update)
+
     def run(self):
         """
         Run the bot.
         """
+        updater = Updater(token)
+        dp = updater.dispatcher # Get the dispatcher to register handlers
+        handler = MessageHandler(Filters.text, self.callback_handler)
+        dp.add_handler(handler)
+        dp.add_handler(CommandHandler("start", self.callback_handler))
+        dp.add_handler(CommandHandler("switch", self.callback_handler))
         print("Running Bot ... (Ctrl-C to exit)")
-        while True:
-            #Check if there are updates.
-            try:
-                bot_updates = self.bot.get_updates(offset=self.update_id, timeout=60)
-            except NetworkError:
-                sleep(1)
-                continue
-            except Unauthorized:
-                # The user has removed or blocked the bot.
-                self.update_id += 1           
-                continue
-            #If succesful
-            self.process_updates(bot_updates)
+        updater.start_polling()
+        #updater.idle()
+
+        # while True:
+        #     #Check if there are updates.
+        #     try:
+        #         bot_updates = self.bot.get_updates(offset=self.update_id, timeout=60)
+        #     except NetworkError:
+        #         sleep(1)
+        #         continue
+        #     except Unauthorized:
+        #         # The user has removed or blocked the bot.
+        #         self.update_id += 1           
+        #         continue
+        #     #If succesful
+        #     self.process_updates(bot_updates)
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
