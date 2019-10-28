@@ -17,12 +17,14 @@ from collections import defaultdict
 #from os import system
 from utils import Params, Config, Modes, find_keyword, find_name, find_id, find_problem
 from get_response import get_response_dict
+from get_response_informal import get_response_dict_informal
 from pymongo import MongoClient
 import telegram
 from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
+import sys
 
 
 
@@ -59,12 +61,13 @@ class TelegramBot():
 
         #initialize bot responses and parameters
         self.reply_dict = get_response_dict()
+        self.reply_dict_informal = get_response_dict_informal()
         self.params = Params()
         self.config = Config()
 
         #initialize database
         if self.params.MODE == Modes.TEXT:
-            self.db = MongoClient().study_Aug_2019  #MongoClient().textbot_telegram
+            self.db = MongoClient().study_Informal_Nov_2019  #MongoClient().textbot_telegram
         else:
             self.db = MongoClient().voicebot_telegram
 
@@ -75,7 +78,7 @@ class TelegramBot():
         self.user_problem_dict = {}
 
 
-        self.allow_choice = True 
+        self.condition = True 
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict, self.ids = self.load_parameters(self.db.user_history)
 
@@ -150,7 +153,7 @@ class TelegramBot():
             subj_id = re.findall(' ([0-9]+)', query)
             if subj_id:
                 self.set_subj_id(user_id, int(subj_id[0]))
-                self.set_choice(user_id)
+                self.set_toggle(user_id, 'formal')
             self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out
@@ -171,7 +174,8 @@ class TelegramBot():
 
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
-        choice = self.user_parameters_dict[user_id].get('choice_enabled', False)
+        choice = self.user_parameters_dict[user_id].get('choice', False)
+        formal = self.user_parameters_dict[user_id].get('formal', False)
         switch = self.user_parameters_dict[user_id].get('switch', False)
         #print(self.user_history[user_id])
 
@@ -210,7 +214,7 @@ class TelegramBot():
                 self.user_problem_dict[user_id] = problem
 
         #show choices
-        if  bot_id == 7 and response_id == 3 and choice:
+        if  bot_id == 7 and response_id == 3: #and choice:
             bots_keyboard = self.bots_keyboard
             reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)               
 
@@ -261,25 +265,26 @@ class TelegramBot():
 
         self.ids[user_id] = subject_id
 
-    def set_choice(self, user_id:int):
+    def set_toggle(self, user_id:int, parameter:str):
         """
-        Set subjects to either the choice (able to choose bots) or non-choice group.
+        Set subjects to either one of 2 conditions.
         Parameters:
             user_id(int) -- unique user identifyer
+            parameter(str) -- name of the condition
         """
-        if 'choice_enabled' not in self.user_parameters_dict[user_id]:
-            if self.allow_choice:
+        if parameter not in self.user_parameters_dict[user_id]:
+            if self.condition:
                 self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {'choice_enabled': True}}},
+                            '$set':{'user_parameters': {parameter: True}}},
                             upsert=True)
-                self.user_parameters_dict[user_id]['choice_enabled'] = True
-                self.allow_choice = False
+                self.user_parameters_dict[user_id][parameter] = True
+                self.condition = False
             else:
                 self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {'choice_enabled': False}}},
+                            '$set':{'user_parameters': {parameter: False}}},
                             upsert=True)
-                self.user_parameters_dict[user_id]['choice_enabled'] = False
-                self.allow_choice = True
+                self.user_parameters_dict[user_id][parameter] = False
+                self.condition = True
 
 
     def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup = None):
@@ -317,11 +322,15 @@ class TelegramBot():
         Returns:
             (list) -- list of strings the responses 
         """
-        response_dict =  self.reply_dict[bot_id][response_id].texts
+        formal = False #= self.user_parameters_dict[user_id].get('formal', False)
+        if formal:
+            response_dict =  self.reply_dict[bot_id][response_id].texts
+        else:
+            response_dict =  self.reply_dict_informal[bot_id][response_id].texts
         #get text of the selected mode
         response_choices = response_dict.get(self.params.MODE, self.reply_dict[bot_id][response_id].texts[Modes.GENERAL])
         response = random.choice(response_choices)
-
+        print(response)
         return response
 
     def replace_entities(self, responses, user_id, bot_id):
@@ -366,7 +375,7 @@ class TelegramBot():
             return 7, 6
 
         if bot_id == 7 and (response_id == 6 or response_id == 7):
-            if self.user_parameters_dict[user_id].get('choice_enabled', False): #go to choice selection
+            if self.user_parameters_dict[user_id].get('choice', False): #go to choice selection
                 return 7, 3
             else:
                 return 7, 10
@@ -460,8 +469,15 @@ class TelegramBot():
         """
         Wrapper function to call the message handler
         """
-        self.process_message(update.message.chat_id, update.message.text)
-        #self.process_updates(update)
+        try:
+            self.process_message(update.message.chat_id, update.message.text)
+        except:
+           print(sys.exc_info()[0])
+
+        self.process_updates(update)
+
+    def error_callback(bot, update, error):
+        raise error
 
     def run(self):
         """
@@ -473,6 +489,8 @@ class TelegramBot():
         dp.add_handler(handler)
         dp.add_handler(CommandHandler("start", self.callback_handler))
         dp.add_handler(CommandHandler("switch", self.callback_handler))
+
+        #dp.add_error_handler(self.error_callback)
         print("Running Bot ... (Ctrl-C to exit)")
         updater.start_polling()
         #updater.idle()

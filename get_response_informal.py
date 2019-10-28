@@ -1,11 +1,12 @@
 # -*- coding: UTF-8 -*-
 
 """
-This file contains the script for all bots.
+This file contains the script for all bots of the informal variation.
 
-Created by Honghao Wei and Nick Tantivasadakarn.
+Created by Nick Tantivasadakarn.
+Bot Scripts by Morco Mora-Mendoza. 
 
-Bot Scripts by Pablo Paredes, Honghao Wei, Hiroshi Mendoza, Jade Thronton, Nick Tantivasadakarn and others. 
+Original Bot Scripts by Pablo Paredes, Honghao Wei, Hiroshi Mendoza, Jade Thronton, Nick Tantivasadakarn and others. 
 """
 
 
@@ -17,7 +18,7 @@ from utils import Params, Config, Modes, Reply
 import random
 
 
-def get_response_dict():
+def get_response_dict_informal():
     """
     Returns a dictionary containing all the scripts for the bots.
 
