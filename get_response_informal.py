@@ -36,7 +36,7 @@ def get_response_dict_informal():
     config = Config()
     modes = Modes
 
-    openning = [["Hi {name}, I\'m {bot_name}"]]
+    openning = [["Hi {name}, I\'m {bot_name} 👋"]]
     closing = [["Thank you for sharing with me. I hope I\'ve been able to help", "Have a nice day!", "---The conversation has ended. Say \"Hi\" when you need us---"]]
 
     dk_check_at_begining = [["Do you want me to come back later?"]]
@@ -242,13 +242,13 @@ def get_response_dict_informal():
 
     #---------------------------------------------------------------------------------------------------------------------------------
     ## Humor bot
-    bot_texts[3][config.OPENNING_INDEX] = Reply(bot_id=3, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Give me more deets about {problem}!"]]}, next_id=1)
-    bot_texts[3][1] = Reply(bot_id=3, response_id=1, texts={modes.GENERAL:[["Thank you for sharing", "That does sound stressful", "Ok, let\'s try looking at this situation in a different light", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
-    bot_texts[3][7] = Reply(bot_id=3, response_id=7, texts={modes.GENERAL:[["Go for it!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
+    bot_texts[3][config.OPENNING_INDEX] = Reply(bot_id=3, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Heyo {name}, I\'m {bot_name}", "What’s on your mind? "]]}, next_id=1)
+    bot_texts[3][1] = Reply(bot_id=3, response_id=1, texts={modes.GENERAL:[["Thanks for sharing. That does sound stressful 🤔", "Have you thought about looking at this problem in a different way", "Maybe you could think of something funny about this whole situation", "¯\\_(ツ)_/¯", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
+    bot_texts[3][7] = Reply(bot_id=3, response_id=7, texts={modes.GENERAL:[["Great! What did you think of?"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
     bot_texts[3][2] = Reply(bot_id=3, response_id=2, texts={modes.GENERAL:[["For example, if you are hungry, and you are stuck in traffic", "This might be a good joke", "Why do French people eat snails?", "Because they don\'t like fast food", "Don\'t worry about it being the best joke, just find something humorous about your situation", "Share your joke with me!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
-    bot_texts[3][3] = Reply(bot_id=3, response_id=3, texts={modes.GENERAL:[["Haha!", "Oftentimes finding the humor in stressful situations can help diffuse some tension", "Okay?"], ["Good joke!", "Sometimes there are good things that happen even if the situation isn\'t the best", "Okay?"], ["Heehee! You\'re funny!", "Humor can be found in many situations", "Okay?"]]}, next_id=4)
+    bot_texts[3][3] = Reply(bot_id=3, response_id=3, texts={modes.GENERAL:[["😂😂😂 hahah that’s funny", "Humor can be found in many situations", "Okay?"]]}, next_id=4)
     bot_texts[3][4] = Reply(bot_id=3, response_id=4, texts={modes.GENERAL:[["Did that help you to find something good (or at least funny) about the situation?"]]}, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 5)])
-    bot_texts[3][5] = Reply(bot_id=3, response_id=5, texts={modes.GENERAL:[["I\'m glad. Would you consider trying this strategy, such as finding a joke, in the future?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[3][5] = Reply(bot_id=3, response_id=5, texts={modes.GENERAL:[["I’m glad 🙂 Do you think this might be a good approach for problems in the future?"]]}, next_id=config.QUESTION_INDEX)
     bot_texts[3][6] = Reply(bot_id=3, response_id=6, texts={modes.GENERAL:[["That\'s ok, humor isn\'t always the answer", "Just remember that trying to find something funny about your situation can help lighten the mood when you're stressed", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
 

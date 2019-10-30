@@ -142,7 +142,7 @@ class TelegramBot():
     #             query = update.message.text 
     #             self.process_message(user_id, query) 
                     
-    @run_async
+    #@run_async
     def process_message(self, user_id, query):
         ############ Special Cases #######################
         if re.match(r'/start', query): #restart
@@ -159,7 +159,6 @@ class TelegramBot():
         elif self.conversation_timeout(user_id): #Time out
             self.log_action(user_id, None, None, "<TIMEOUT>", "")
             self.save_history_to_database(user_id)
-            self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             self.user_history.pop(user_id, None)
             self.user_bot_state_dict.pop(user_id, None)
             self.user_problem_dict.pop(user_id, None)
@@ -168,7 +167,6 @@ class TelegramBot():
             self.log_action(user_id, None, None, "<SWITCH>", "")
             self.user_parameters_dict[user_id]['switch'] = True
             #self.save_history_to_database(user_id)
-            self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             #self.user_history.pop(user_id, None)
             self.user_bot_state_dict[user_id] = (7,7)
 
@@ -214,7 +212,7 @@ class TelegramBot():
                 self.user_problem_dict[user_id] = problem
 
         #show choices
-        if  bot_id == 7 and response_id == 3: #and choice:
+        if  bot_id == 7 and response_id == 3 and choice:
             bots_keyboard = self.bots_keyboard
             reply_markup = telegram.ReplyKeyboardMarkup(bots_keyboard, resize_keyboard= True)               
 
@@ -231,6 +229,7 @@ class TelegramBot():
             else:
                 last = self.user_parameters_dict[user_id].get('last', None)
                 bot_id = self.recommend_bot(last)
+                self.user_parameters_dict[user_id]['last']=bot_id
             response_id = self.config.OPENNING_INDEX
 
 
@@ -254,10 +253,23 @@ class TelegramBot():
             self.process_message(user_id, "<SKIP>")
 
 
+    def set_parameter(self, user_id:int, parameter:str, value):
+        """
+        Sets a parameter in the database
+
+        Parameters:
+            user_id(int) -- unique user identifyer
+            parameter(int) -- subject id (MUST be a non-indentifiable number)
+            value -- value of the parameter
+        """
+        self.db.user_history.update_one({'user_id':user_id}, {
+                            '$set':{'user_parameters': {parameter: value}}},
+                            upsert=True)
+
     def set_subj_id(self, user_id:int, subject_id:int):
         """
         Parameters:
-            user_id(int) -- unique user identifye
+            user_id(int) -- unique user identifyer
             subject_id(int) -- subject id (MUST be a non-indentifiable number)
         """
         self.db.user_history.update_one({'user_id':user_id}, {'$set':{'subject_id': subject_id}},
@@ -274,15 +286,17 @@ class TelegramBot():
         """
         if parameter not in self.user_parameters_dict[user_id]:
             if self.condition:
-                self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {parameter: True}}},
-                            upsert=True)
+                # self.db.user_history.update_one({'user_id':user_id}, {
+                #             '$set':{'user_parameters': {parameter: True}}},
+                #             upsert=True)
+                self.set_parameter(user_id, parameter, True)
                 self.user_parameters_dict[user_id][parameter] = True
                 self.condition = False
             else:
-                self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {parameter: False}}},
-                            upsert=True)
+                # self.db.user_history.update_one({'user_id':user_id}, {
+                #             '$set':{'user_parameters': {parameter: False}}},
+                #             upsert=True)
+                self.set_parameter(user_id, parameter, False)
                 self.user_parameters_dict[user_id][parameter] = False
                 self.condition = True
 
@@ -330,7 +344,6 @@ class TelegramBot():
         #get text of the selected mode
         response_choices = response_dict.get(self.params.MODE, self.reply_dict[bot_id][response_id].texts[Modes.GENERAL])
         response = random.choice(response_choices)
-        print(response)
         return response
 
     def replace_entities(self, responses, user_id, bot_id):
@@ -413,7 +426,9 @@ class TelegramBot():
 
             Note: it also logs a time stamp 
         """
+        conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
         new_entry = {
+                        'conv_id':conv_id,
                         'bot_id':bot_id, 
                         'response_id':response_id,
                         'query':query,
@@ -463,6 +478,9 @@ class TelegramBot():
         self.db.user_history.update_one({'user_id':user_id},
                                         {"$push":{'user_history': history}}
                                     )
+        conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
+        self.set_parameter(user_id, 'conv_id', conv_id+1)
+        self.user_parameters_dict[user_id]['conv_id'] = conv_id
 
     
     def callback_handler(self, bot, update):

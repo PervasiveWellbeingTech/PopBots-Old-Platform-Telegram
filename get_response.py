@@ -293,7 +293,7 @@ def get_response_dict():
     bot_texts[6][1] = Reply(bot_id=6, response_id=1, texts={modes.GENERAL:[["Awesome!", "What makes you excited about it?"], ["Cool, tell me about it"]]}, next_id=2)
     bot_texts[6][2] = Reply(bot_id=6, response_id=2, texts={modes.GENERAL:[["Tell me more! I want to hear all about it!"]]}, next_id=3)
     bot_texts[6][3] = Reply(bot_id=6, response_id=3, texts={modes.GENERAL:[["Is there anything else you're excited about?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 2)])
-    bot_texts[6][4] = Reply(bot_id=6, response_id=4, texts={modes.GENERAL:[["No worries. When you're feeling stressed, it can be good to think about other things that you might be excited about"],["Alrighty. Next time you feel stressed, you could think about something that makes you excited"  , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[6][4] = Reply(bot_id=6, response_id=4, texts={modes.GENERAL:[["No worries. When you're feeling stressed, it can be good to think about other things that you might be excited about", "Sounds Good?"],["Alrighty. Next time you feel stressed, you could think about something that makes you excited"  , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
     #---------------------------------------------------------------------------------------------------------------------------------
     ## checkin bot
