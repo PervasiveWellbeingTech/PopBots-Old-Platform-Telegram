@@ -61,7 +61,7 @@ def get_response_dict_informal():
 
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name}", "Tell with me more details about {problem}?"], ["Hi {name}, I\'m {bot_name}", "Why is {problem} stressing you out?"]]
+    tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name} 👋", "Tell with me more details about {problem}?"]]
     # tmp_text[topics.TRAFFIC] = [["Traffic can really suck", "How bad is it out there today?"]]
     # tmp_text[topics.TIRED] = [["I see that you seem tired", "Do you feel you got enough sleep last night?"]]
     # tmp_text[topics.LATE] = [["Sorry to hear that you are late", "How bad is it?"]]
@@ -72,7 +72,7 @@ def get_response_dict_informal():
 
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Hmm I see...", "What are you most worried about happening due to {problem}?"], ["I\'m sorry to hear that", "What are you most afraid might happen as a result?"]]
+    tmp_text[modes.GENERAL] = [["Hmm I see… 🤔", "What are you most worried about happening?"]]
     # tmp_text[topics.TRAFFIC] = [["That\'s unfortunate", "What do you think the worst possible outcome of this traffic is for you?"]]
     # tmp_text[topics.TIRED] = [["That could be a possible fix", "What\'s the worst possible outcome of you being tired?"]]
     # tmp_text[topics.LATE] = [["Sorry to hear that", "Let me ask you something, what is the worst possible outcome of your lateness?"]]
@@ -81,11 +81,11 @@ def get_response_dict_informal():
     bot_texts[0][1] = Reply(bot_id=0, response_id=1, texts=tmp_text, next_id=[(config.DEFAULT_DK, 7), (config.DEFAULT_OTHERS, 2)])
     del tmp_text
 
-    bot_texts[0][2] = Reply(bot_id=0, response_id=2, texts={modes.GENERAL:[["Thank you for sharing your worry with me", "Ok, on a scale of 1 to 10, with 1 being almost impossible, how likely is this scenario?"], ["Alright, on a scale of 1 to 10, 1 being impossible, 10 being certain, how likely is this scenario?"]]}, next_id= [(('5','6','7', 'five', 'six','seven', '8','9','10', 'eight', 'nine', 'ten', 'likely', 'certain'), 3), (('1','2','3','4','one','two','three','four', 'unlikely', 'impossible'), 4), ((config.DEFAULT_OTHERS, ), 10)])
+    bot_texts[0][2] = Reply(bot_id=0, response_id=2, texts={modes.GENERAL:[["Thanks for sharing", "Ok, from 1 to 10 with 1 being almost impossible, how likely is the worst thing to happen"]]}, next_id= [(('5','6','7', 'five', 'six','seven', '8','9','10', 'eight', 'nine', 'ten', 'likely', 'certain'), 3), (('1','2','3','4','one','two','three','four', 'unlikely', 'impossible'), 4), ((config.DEFAULT_OTHERS, ), 10)])
 
 
     bot_texts[0][3] = Reply(bot_id=0, response_id=3, texts={modes.GENERAL:[["Alright, in the case that this happens, what could you do to get back on track?"]]}, next_id=[(config.DEFAULT_DK, 6), (config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
-    bot_texts[0][4] = Reply(bot_id=0, response_id=4, texts={modes.GENERAL:[["So, would you agree that this scenario is unlikely?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 9)])
+    bot_texts[0][4] = Reply(bot_id=0, response_id=4, texts={modes.GENERAL:[["So you agree this is unlikely? 🤔"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 9)])
     #bot_texts[0][5] = Reply(bot_id=0, response_id=5, texts={modes.GENERAL:[["So would you agree that the worst case situation is unlikely?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 9)])
 
     bot_texts[0][6] = Reply(bot_id=0, response_id=6, texts={modes.GENERAL:[[""]]}, next_id= [(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
@@ -107,7 +107,7 @@ def get_response_dict_informal():
 
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Glad to hear that", "Sometimes it\'s helpful to realize that our worries aren\'t always as likely as we think they are", "Do you agree?"]]
+    tmp_text[modes.GENERAL] = [["Great to hear", "Sometimes it’s helpful to realize that the worst possible scenario isn’t that likely to happen or wouldn’t be the end of the world 🤷", "Do you agree?"]]
     # tmp_text[topics.TRAFFIC] = [["Glad to hear that", "Traffic is a nuisance but getting too stressed out by it is often more trouble than it\'s worth"]]
     # tmp_text[topics.TIRED] = [["Seems like you have things in perspective", "Often, we just need a good night\'s rest or even  a short nap to feel refreshed"]]
     # tmp_text[topics.LATE] = [["Even the best prepared are sometimes late", "It\'s usually more trouble than it\'s worth to get too worked up about it"]]
@@ -124,7 +124,7 @@ def get_response_dict_informal():
 
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name}.","Give me more details about {problem}."]]
+    tmp_text[modes.GENERAL] = [["Hey {name}, I\'m {bot_name}. 👋","Tell me more about {problem}."]]
     # tmp_text[topics.TRAFFIC] = [["No one likes traffic", "How bad is it out there today?"]]
     # tmp_text[topics.TIRED] = [["I see that you seem tired", "Do you know why?"]]
     # tmp_text[topics.LATE] = [["Why are you late today?"]]
@@ -136,7 +136,7 @@ def get_response_dict_informal():
 
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Hmm, let\'s think about this together", "Do you feel this problem is significantly affecting your life?"]]
+    tmp_text[modes.GENERAL] = [["Alright, let’s think about this together 🤔", "Do you feel this is has affected your life?"]]
     # tmp_text[topics.TRAFFIC] = [["Do you feel traffic is significantly affecting your life?"]]
     # tmp_text[topics.TIRED] = [["Are you frequently tired during your normal working hours?", "Is tiredness negatively affecting important aspects of your life?"]]
     # tmp_text[topics.LATE] = [["I see", "Is lateness a problem that frequently affects your life or is this a one-time thing?"]]
@@ -145,12 +145,12 @@ def get_response_dict_informal():
     bot_texts[1][1] = Reply(bot_id=1, response_id=1, texts=tmp_text, next_id=4)
     del tmp_text
 
-    bot_texts[1][2] = Reply(bot_id=1, response_id=2, texts={modes.GENERAL:[["If you could solve this problem, would your life improve?"]]}, next_id=4)
-    bot_texts[1][3] = Reply(bot_id=1, response_id=3, texts={modes.GENERAL:[["Seems like this is not a problem worth worrying about", " Do you still want to work on it?"], ["In that case, do you feel that you\'d still like to spend time working on it?"]]}, next_id=[(config.DEFAULT_NO, config.QUESTION_INDEX), (config.DEFAULT_OTHERS, 4)])
+    # bot_texts[1][2] = Reply(bot_id=1, response_id=2, texts={modes.GENERAL:[["If you could solve this problem, would your life improve?"]]}, next_id=4)
+    # bot_texts[1][3] = Reply(bot_id=1, response_id=3, texts={modes.GENERAL:[["Seems like this is not a problem worth worrying about", " Do you still want to work on it?"], ["In that case, do you feel that you\'d still like to spend time working on it?"]]}, next_id=[(config.DEFAULT_NO, config.QUESTION_INDEX), (config.DEFAULT_OTHERS, 4)])
     
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Have you ever dealt with this problem or something similar before?"]]
+    tmp_text[modes.GENERAL] = [["Have you’ve dealt with something like this before?"]]
     # tmp_text[topics.TRAFFIC] = [["Was there an effective way you coped with traffic before?"]]
     # tmp_text[topics.TIRED] = [["How have you coped with being tired in the past?"]]
     # tmp_text[topics.LATE] = [["Have you ever found a way to avoid being late in the past that worked well?"]]
@@ -176,7 +176,7 @@ def get_response_dict_informal():
     bot_texts[1][13] = Reply(bot_id=1, response_id=13, texts={modes.GENERAL:[["Awesome! When can you do this in the next few days? I find it helpful, to add plans to my calendar", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
 
-    bot_texts[1][6] = Reply(bot_id=1, response_id=6, texts={modes.GENERAL:[["Perhaps breaking down the problem would be helpful", "Try to describe for me a piece of the problem and a simple solution for it?"]]}, next_id=[(config.DEFAULT_NO, 8), (config.DEFAULT_OTHERS, 9)])
+    bot_texts[1][6] = Reply(bot_id=1, response_id=6, texts={modes.GENERAL:[["Maybe breaking it down would be helpful 🤷", "What’s a small part of the problem and a simple solution?"]]}, next_id=[(config.DEFAULT_NO, 8), (config.DEFAULT_OTHERS, 9)])
     #bot_texts[1][7] = Reply(bot_id=1, response_id=7, texts={modes.GENERAL:[["That\'s alright. Can you "]]}, next_id=config.QUESTION_INDEX)
 
 
@@ -191,7 +191,7 @@ def get_response_dict_informal():
     del tmp_text
 
 
-    bot_texts[1][9] = Reply(bot_id=1, response_id=9, texts={modes.GENERAL:[["Great, I\'m glad you can do something about it", "By breaking down a problem into tiny steps, we can often string together a solution", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[1][9] = Reply(bot_id=1, response_id=9, texts={modes.GENERAL:[["There you go, you can do that", "Breaking down big problems helps tackle them one step at a time", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
 
     tmp_text = {}
@@ -206,10 +206,10 @@ def get_response_dict_informal():
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## Positive thinking bot
+    ## Glass-half-full (Positive thinking bot)
 
     tmp_text = {}
-    tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name}", "What is it about {problem} that is making you feel stressed?"]]
+    tmp_text[modes.GENERAL] = [["Hey {name}, I\'m {bot_name}", "What’s up?"]]
     # tmp_text[topics.TRAFFIC] = [["Could you give me more detail on the traffic is today?"]]
     # tmp_text[topics.TIRED] = [["How do you feel your tiredness is adding to your stress level?"]]
     # tmp_text[topics.LATE] = [["Can you give me more detail on the event you are late to"]]
@@ -218,11 +218,11 @@ def get_response_dict_informal():
     bot_texts[2][config.OPENNING_INDEX] = Reply(bot_id=2, response_id=config.OPENNING_INDEX, texts=tmp_text, next_id=1)
     del tmp_text
 
-    bot_texts[2][1] = Reply(bot_id=2, response_id=1, texts={modes.GENERAL:[["I see how that can be stressful", "I want you to take a couple minutes and think about at least one positive aspect about your situation", "Then share it with me"], ["I\'m sorry", "I want you to try something", "Take a couple minutes and think about at least one positive aspect about your situation", "Share it with me when you’re done"]]}, next_id=2)
-    bot_texts[2][2] = Reply(bot_id=2, response_id=2, texts={modes.GENERAL:[["Good job finding a positive alternative!", "Is there another positive alternative you can find in your situation?"], ["Great!", "Do you think there is another positive alternative you can find in your situation?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 3)])
-    bot_texts[2][3] = Reply(bot_id=2, response_id=3, texts={modes.GENERAL:[["Wonderful! See, you can usually find positives even when in the most negative of situations"], ["Awesome you\'re a great positive thinker!!"]]}, next_id=5)
-    bot_texts[2][4] = Reply(bot_id=2, response_id=4, texts={modes.GENERAL:[["That\'s ok! You found some positive to the situation"], ["That\'s alright you did find one positive which is really good"]]}, next_id=5)
-    bot_texts[2][5] = Reply(bot_id=2, response_id=5, texts={modes.GENERAL:[["Positive thinking can be a good way to destress, making it easier to face challenges", "Sounds good?"], ["When you\'re feeling down about a situation, trying to find the positives can make it easier to handle" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[2][1] = Reply(bot_id=2, response_id=1, texts={modes.GENERAL:[["Hmm I see 🤔", "Ok let’s do this. Why don’t you take a couple minutes and think about at least one positive thing about the problem?", "What did you think of?"]]}, next_id=2)
+    bot_texts[2][2] = Reply(bot_id=2, response_id=2, texts={modes.GENERAL:[["Great!", "Can you think of any other ones?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 3)])
+    bot_texts[2][3] = Reply(bot_id=2, response_id=3, texts={modes.GENERAL:[["Haha that’s cool! See, you can always find the good out of a bad situation <3"]]}, next_id=5)
+    bot_texts[2][4] = Reply(bot_id=2, response_id=4, texts={modes.GENERAL:[["That’s ok! 😊 At least you found something positive about it"]]}, next_id=5)
+    bot_texts[2][5] = Reply(bot_id=2, response_id=5, texts={modes.GENERAL:[["When you’re having a bad day looking at the bright side might make you feel better btw 🌞", "Sounds good?"], ["When you\'re feeling down about a situation, trying to find the positives can make it easier to handle" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
 
     tmp_text = {}
@@ -241,7 +241,7 @@ def get_response_dict_informal():
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## Humor bot
+    ## Sir laughts-a-bot (Humor bot)
     bot_texts[3][config.OPENNING_INDEX] = Reply(bot_id=3, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Heyo {name}, I\'m {bot_name}", "What’s on your mind? "]]}, next_id=1)
     bot_texts[3][1] = Reply(bot_id=3, response_id=1, texts={modes.GENERAL:[["Thanks for sharing. That does sound stressful 🤔", "Have you thought about looking at this problem in a different way", "Maybe you could think of something funny about this whole situation", "¯\\_(ツ)_/¯", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
     bot_texts[3][7] = Reply(bot_id=3, response_id=7, texts={modes.GENERAL:[["Great! What did you think of?"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
@@ -253,8 +253,8 @@ def get_response_dict_informal():
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## relaxation bot
-    bot_texts[4][config.OPENNING_INDEX] = Reply(bot_id=4, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Tell me more details about {problem}"]]}, next_id=1)
+    ## Chill bot (relaxation bot)
+    bot_texts[4][config.OPENNING_INDEX] = Reply(bot_id=4, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hey {name}, I\'m {bot_name}", "Tell me more details about {problem}"]]}, next_id=1)
     bot_texts[4][1] = Reply(bot_id=4, response_id=1, texts={modes.GENERAL:[["I have a couple strategies to help you feel better", "Say yes if you would rather do a visualization", "Say no if you want to focus on your breathing",  "If you don\'t know which activity you want to do, you can also say no preference and I can decide for you"]]}, next_id=[(('no preference', 'both'), random.randint(2,3)), (('no', ), 3), (('yes', ), 2)])
 
     bot_texts[4][2] = Reply(bot_id=4, response_id=2, texts={modes.GENERAL:[["Ok, {name}, let\'s do a visualization activity", "I\'d like you to imagine of any place that makes you feel happy or calm", "Think of all the details, as vivid of a picture as you can imagine", "Think of your senses: the sights, the smells, the sounds"], ["Picture a time when you felt at peace. What was around you in this time?", "What did it feel like?", "What do you see, smell or hear?", "Let me know when you are done with your visualization"]]}, next_id=4)
@@ -274,27 +274,27 @@ def get_response_dict_informal():
     bot_texts[4][13] = Reply(bot_id=4, response_id=13, texts={modes.GENERAL:[["Oftentimes, taking a moment to be mindful may help you in situations when you are feeling stressed", "Sounds good?"]]}, next_id=[(config.DEFAULT_NO, 14), (config.DEFAULT_OTHERS, config.QUESTION_INDEX)])
     bot_texts[4][14] = Reply(bot_id=4, response_id=14, texts={modes.GENERAL:[["That\'s ok. There are many other ways to deal with stress" , "Ok?"]]}, next_id=config.QUESTION_INDEX)
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## self-love bot
+    ## Treat Yourself Bot (self-love bot)
 
-    bot_texts[5][config.OPENNING_INDEX] = Reply(bot_id=5, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Could you give me more information about {problem}?"]]}, next_id=2)
-    bot_texts[5][2] = Reply(bot_id=5, response_id=2, texts={modes.GENERAL:[["Imagine a close friend came to you with a similar problem", "How would you support them?"], ["Imagine a close friend asked you to help with a similar problem", "What might you say to them to make them feel better?"]]}, next_id=[(config.DEFAULT_DK, 3), (config.DEFAULT_OTHERS, 5)])
+    bot_texts[5][config.OPENNING_INDEX] = Reply(bot_id=5, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name} 👋", "Could you give me more information about {problem}?"]]}, next_id=2)
+    bot_texts[5][2] = Reply(bot_id=5, response_id=2, texts={modes.GENERAL:[["Hmm… imagine a friend came to you and asked you for advice on the same thing", "What would you tell them?"]]}, next_id=[(config.DEFAULT_DK, 3), (config.DEFAULT_OTHERS, 5)])
     bot_texts[5][3] = Reply(bot_id=5, response_id=3, texts={modes.GENERAL:[["That\'s okay, sometimes it\'s hard to know how to support someone in a difficult situation", "I send you some things I might do when I\'m stressed", "Feel free to use this list for ideas", "You can also add your own if you feel like I missed something", "Does that sound good?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, config.QUESTION_INDEX)])
-    bot_texts[5][5] = Reply(bot_id=5, response_id=5, texts={modes.GENERAL:[["What do you think are the benefits of offering this kind of support?"]]}, next_id=6)
-    bot_texts[5][6] = Reply(bot_id=5, response_id=6, texts={modes.GENERAL:[["Do you have a friend you could go to for this type of support?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 7)])
-    bot_texts[5][7] = Reply(bot_id=5, response_id=7, texts={modes.GENERAL:[["Could you make a plan of when to connect with this person?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 8)])
-    bot_texts[5][8] = Reply(bot_id=5, response_id=8, texts={modes.GENERAL:[["Awesome, friends can often provide the best support", "It\'s great that you have made time to prioritize yourself!" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[5][5] = Reply(bot_id=5, response_id=5, texts={modes.GENERAL:[["What are the benefits of this advice?"]]}, next_id=6)
+    bot_texts[5][6] = Reply(bot_id=5, response_id=6, texts={modes.GENERAL:[["Do you have a friend or somebody else to talk to that could give you this kind of support? 🤷"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 7)])
+    bot_texts[5][7] = Reply(bot_id=5, response_id=7, texts={modes.GENERAL:[["Ok. Can you make a plan of when to talk to them?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 8)])
+    bot_texts[5][8] = Reply(bot_id=5, response_id=8, texts={modes.GENERAL:[["Awesome, friends can often provide the best support", "It’s great that you have made time to care about yourself 😄" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
     bot_texts[5][4] = Reply(bot_id=5, response_id=4, texts={modes.GENERAL:[["I wish I could give you a hug right now to make you feel better!", "I care about you!, and I\'m sure there are others that do too!, even if they are not available right now", "I hope I have been able to help!, I\'m here whenever you need me", "If you ever want to talk about your problems just find me or one of my friends, ok?"]]}, next_id=config.QUESTION_INDEX)
     
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## distraction bot
+    ## Dunno bot (distraction bot)
         #Distraction - dunno bot
-    bot_texts[6][config.OPENNING_INDEX] = Reply(bot_id=6, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}.", "I think that {problem} can definitely be stressful. Let\'s try to shift our attention to something else to help get your mind off it", "What\'s something you are looking forward to?"], ["Things can be stressful at times. One tool is to think about something that is coming up that is exciting", "What is an event that you are looking forward to?"]]}, next_id=1)
-    bot_texts[6][1] = Reply(bot_id=6, response_id=1, texts={modes.GENERAL:[["Awesome!", "What makes you excited about it?"], ["Cool, tell me about it"]]}, next_id=2)
-    bot_texts[6][2] = Reply(bot_id=6, response_id=2, texts={modes.GENERAL:[["Tell me more! I want to hear all about it!"]]}, next_id=3)
-    bot_texts[6][3] = Reply(bot_id=6, response_id=3, texts={modes.GENERAL:[["Is there anything else you're excited about?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 2)])
-    bot_texts[6][4] = Reply(bot_id=6, response_id=4, texts={modes.GENERAL:[["No worries. When you're feeling stressed, it can be good to think about other things that you might be excited about"],["Alrighty. Next time you feel stressed, you could think about something that makes you excited"  , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[6][config.OPENNING_INDEX] = Reply(bot_id=6, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Heyo  {name}, I\'m {bot_name} 👋", "I’ve heard you are stressed. Let’s get your mind off it by distracting ourselves a little 🙌", "What’s something you’ve been looking forward to? It can be anything"]]}, next_id=1)
+    bot_texts[6][1] = Reply(bot_id=6, response_id=1, texts={modes.GENERAL:[["Oooh tell me more 😮"]]}, next_id=2)
+    bot_texts[6][2] = Reply(bot_id=6, response_id=2, texts={modes.GENERAL:[["Is that all? I want to hear all about it!"]]}, next_id=3)
+    bot_texts[6][3] = Reply(bot_id=6, response_id=3, texts={modes.GENERAL:[["Cool. Anything else you’re excited about?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 2)])
+    bot_texts[6][4] = Reply(bot_id=6, response_id=4, texts={modes.GENERAL:[["Alright. Remember that when you’re stressed you can think of things you’re looking forward to do ", "Sound good?"]]}, next_id=config.QUESTION_INDEX)
 
     #---------------------------------------------------------------------------------------------------------------------------------
     ## checkin bot
@@ -362,7 +362,7 @@ def get_response_dict_informal():
     #---------------------------------------------------------------------------------------------------------------------------------
     ## checkin bot
 
-    bot_texts[8][config.OPENNING_INDEX] = Reply(bot_id=8, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Hmm, that sounds stressful","I\'m not sure I can help you solve that problem directly, but maybe we could check and see how it\'s affecting other aspects of your life","Does that sound ok?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
+    bot_texts[8][config.OPENNING_INDEX] = Reply(bot_id=8, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name} 👋", "Hmm, that sounds stressful", "Maybe we can think of how the problem is affecting other parts of your life 🤷","Sounds good?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
 
     #can we pass off to a bot friend?
     bot_texts[8][1] =  Reply(bot_id=8, response_id=1, texts={modes.GENERAL:[["Okay, maybe I can introduce you to my other bot-friends?"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, config.QUESTION_INDEX)])
@@ -375,13 +375,13 @@ def get_response_dict_informal():
     bot_texts[8][3] = Reply(bot_id=8, response_id=3, texts={modes.GENERAL:[["Ok, rockin! Yay sleep!","What about your eating habits? Has this problem prevented you from eating regularly?"]]}, next_id=[(config.DEFAULT_NO, 5), (config.DEFAULT_OTHERS, 6)])
     #yes - bad sleep 0
     # {0}
-    bot_texts[8][4] = Reply(bot_id=8, response_id=4, texts={modes.GENERAL:[["That\'s okay, sometimes sleep can be hard to schedule in. Everyone has times when they miss out on sleep", "What about your eating habits? Has this problem prevented you from eating regularly?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
+    bot_texts[8][4] = Reply(bot_id=8, response_id=4, texts={modes.GENERAL:[["That’s ok. Although sleeping is great sometimes we might miss out on it", "What about eating? Have you been eating regularly? 🤷"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
 
 
     #good sleep
     #no - good food =2
     #{1, 1}
-    bot_texts[8][5] = Reply(bot_id=8, response_id=5, texts={modes.GENERAL:[["I\'m glad to hear that","One last question. Have you tried discussing this issue with your friends or family? They\'re the ones who often can help in a time like this"]]}, next_id=[(config.DEFAULT_NO, 10), (config.DEFAULT_OTHERS, 9)])
+    bot_texts[8][5] = Reply(bot_id=8, response_id=5, texts={modes.GENERAL:[["I\'m glad to hear that","One last thing. Have you’ve talked about this with other people? Talking to your friends or family might help"]]}, next_id=[(config.DEFAULT_NO, 10), (config.DEFAULT_OTHERS, 9)])
     #yes - bad food =1
     #{1, 0}
     bot_texts[8][6] = Reply(bot_id=8, response_id=6, texts={modes.GENERAL:[["That can be tough, but I can tell that you are working hard and doing your best!","Have you tried discussing this issue with your friends or family? They\'re the ones who often can help in a time like this"]]}, next_id=[(config.DEFAULT_NO, 12), (config.DEFAULT_OTHERS, 11)])
@@ -402,22 +402,22 @@ def get_response_dict_informal():
 
     #{sleep, eat, friends}
     #{1, 1, 0}
-    bot_texts[8][10] = Reply(bot_id=8, response_id=10, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you","Hey! Good job! It seems you\'ve got things mostly under control. It might be helpful to set aside some time reaching out to people you care about" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[8][10] = Reply(bot_id=8, response_id=10, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you","Great! Seems like things are not that bad. It might be helpful to set aside some time reaching out to people you care about" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
     
     #{1, 0, 1}
-    bot_texts[8][11] = Reply(bot_id=8, response_id=11, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this", "Hey! Good job! It seems you\'ve got things mostly under control. It might be helpful to set aside some time for eating" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[8][11] = Reply(bot_id=8, response_id=11, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this", "Great! Seems like things are not that bad. Remember to set aside some time for eating so that you can feel better in general 🌞" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
     
     #{1, 0, 0}
     bot_texts[8][12] = Reply(bot_id=8, response_id=12, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you","Great job on sleeping regularly! It could be helpful to focus on eating regularly and reaching out to people you care about" , "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
     
     #{0, 1, 1}
-    bot_texts[8][13] = Reply(bot_id=8, response_id=13, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this","Hey! Good job! It seems you\'ve got things mostly under control. It might be helpful to set aside some time for sleeping", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[8][13] = Reply(bot_id=8, response_id=13, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this","Great! Seems like things are not that bad. Remember to set aside some time for sleeping so that you can feel better in general 🌞", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
     
     #{0, 1, 0}
     bot_texts[8][14] = Reply(bot_id=8, response_id=14, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you","Great job on eating regularly! It might be helpful to focus on sleeping regularly and reaching out to people who care about you", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
     #{0, 0, 1}
-    bot_texts[8][15] = Reply(bot_id=8, response_id=15, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this","Great job on reaching out to people who care about you! It could be helpful to focus on sleeping regularly and eating regularly", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
+    bot_texts[8][15] = Reply(bot_id=8, response_id=15, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this","Great job on reaching out to people who care about you! Remember to set aside some time for eating and sleeping so that you can feel better in general 🌞", "Sounds good?"]]}, next_id=config.QUESTION_INDEX)
 
     #{0, 0, 0}
     bot_texts[8][16] = Reply(bot_id=8, response_id=16, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you","Hey I just want to say that things are going to get better. Hang in there tiger! Eating and sleeping regularly as well as reaching out to loved ones can be great places to start if you are feeling stressed", "Sounds good?"]]}, next_id=config.CLOSING_INDEX)    

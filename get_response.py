@@ -205,7 +205,7 @@ def get_response_dict():
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## Positive thinking bot
+    ## Glass-half-full (Positive thinking bot)
 
     tmp_text = {}
     tmp_text[modes.GENERAL] = [["Hi {name}, I\'m {bot_name}", "What is it about {problem} that is making you feel stressed?"]]
@@ -240,7 +240,7 @@ def get_response_dict():
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## Humor bot
+    ## Sir laughts-a-bot (Humor bot)
     bot_texts[3][config.OPENNING_INDEX] = Reply(bot_id=3, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Give me more deets about {problem}!"]]}, next_id=1)
     bot_texts[3][1] = Reply(bot_id=3, response_id=1, texts={modes.GENERAL:[["Thank you for sharing", "That does sound stressful", "Ok, let\'s try looking at this situation in a different light", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
     bot_texts[3][7] = Reply(bot_id=3, response_id=7, texts={modes.GENERAL:[["Go for it!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
@@ -252,7 +252,7 @@ def get_response_dict():
 
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## relaxation bot
+    ## Chill bot (relaxation bot)
     bot_texts[4][config.OPENNING_INDEX] = Reply(bot_id=4, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Tell me more details about {problem}"]]}, next_id=1)
     bot_texts[4][1] = Reply(bot_id=4, response_id=1, texts={modes.GENERAL:[["I have a couple strategies to help you feel better", "Say yes if you would rather do a visualization", "Say no if you want to focus on your breathing",  "If you don\'t know which activity you want to do, you can also say no preference and I can decide for you"]]}, next_id=[(('no preference', 'both'), random.randint(2,3)), (('no', ), 3), (('yes', ), 2)])
 
@@ -273,7 +273,7 @@ def get_response_dict():
     bot_texts[4][13] = Reply(bot_id=4, response_id=13, texts={modes.GENERAL:[["Oftentimes, taking a moment to be mindful may help you in situations when you are feeling stressed", "Sounds good?"]]}, next_id=[(config.DEFAULT_NO, 14), (config.DEFAULT_OTHERS, config.QUESTION_INDEX)])
     bot_texts[4][14] = Reply(bot_id=4, response_id=14, texts={modes.GENERAL:[["That\'s ok. There are many other ways to deal with stress" , "Ok?"]]}, next_id=config.QUESTION_INDEX)
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## self-love bot
+    ## Treat Yourself Bot (self-love bot)
 
     bot_texts[5][config.OPENNING_INDEX] = Reply(bot_id=5, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "Could you give me more information about {problem}?"]]}, next_id=2)
     bot_texts[5][2] = Reply(bot_id=5, response_id=2, texts={modes.GENERAL:[["Imagine a close friend came to you with a similar problem", "How would you support them?"], ["Imagine a close friend asked you to help with a similar problem", "What might you say to them to make them feel better?"]]}, next_id=[(config.DEFAULT_DK, 3), (config.DEFAULT_OTHERS, 5)])
@@ -287,9 +287,9 @@ def get_response_dict():
     
 
     #---------------------------------------------------------------------------------------------------------------------------------
-    ## distraction bot
+    ## Dunno bot (distraction bot)
         #Distraction - dunno bot
-    bot_texts[6][config.OPENNING_INDEX] = Reply(bot_id=6, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}.", "I think that {problem} can definitely be stressful. Let\'s try to shift our attention to something else to help get your mind off it", "What\'s something you are looking forward to?"], ["Things can be stressful at times. One tool is to think about something that is coming up that is exciting", "What is an event that you are looking forward to?"]]}, next_id=1)
+    bot_texts[6][config.OPENNING_INDEX] = Reply(bot_id=6, response_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi {name}, I\'m {bot_name}", "I think that {problem} can definitely be stressful. Let\'s try to shift our attention to something else to help get your mind off it", "What\'s something you are looking forward to?"], ["Things can be stressful at times. One tool is to think about something that is coming up that is exciting", "What is an event that you are looking forward to?"]]}, next_id=1)
     bot_texts[6][1] = Reply(bot_id=6, response_id=1, texts={modes.GENERAL:[["Awesome!", "What makes you excited about it?"], ["Cool, tell me about it"]]}, next_id=2)
     bot_texts[6][2] = Reply(bot_id=6, response_id=2, texts={modes.GENERAL:[["Tell me more! I want to hear all about it!"]]}, next_id=3)
     bot_texts[6][3] = Reply(bot_id=6, response_id=3, texts={modes.GENERAL:[["Is there anything else you're excited about?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 2)])

@@ -25,6 +25,7 @@ from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
 import sys
+import traceback
 
 
 
@@ -175,7 +176,6 @@ class TelegramBot():
         choice = self.user_parameters_dict[user_id].get('choice', False)
         formal = self.user_parameters_dict[user_id].get('formal', False)
         switch = self.user_parameters_dict[user_id].get('switch', False)
-        #print(self.user_history[user_id])
 
         if response_id == self.config.CLOSING_INDEX and not switch:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
@@ -490,7 +490,12 @@ class TelegramBot():
         try:
             self.process_message(update.message.chat_id, update.message.text)
         except:
-           print(sys.exc_info()[0])
+            exc_info = sys.exc_info()
+        finally:
+            traceback.print_exception(*exc_info)
+            del exc_info
+           #print(sys.exc_info()[0])
+           # traceback.print_stack()
 
         self.process_updates(update)
 
