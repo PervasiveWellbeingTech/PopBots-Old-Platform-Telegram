@@ -79,7 +79,7 @@ class TelegramBot():
         self.user_problem_dict = {}
 
 
-        self.condition = True 
+        self.condition = False#True 
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict, self.ids = self.load_parameters(self.db.user_history)
 
@@ -184,7 +184,7 @@ class TelegramBot():
         if bot_id == 7 and response_id == 9:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
             self.save_history_to_database(user_id)
-        
+
         if response_id == None: #End of conversation"
             self.user_history.pop(user_id, None)
             self.user_parameters_dict[user_id]['last']=bot_id
@@ -193,6 +193,12 @@ class TelegramBot():
                 bot_id, response_id = self.get_next(user_id, query)
             else:
                 self.user_bot_state_dict.pop(user_id, None)
+
+        # if it begins a conversation, increment the counter
+        if bot_id == 7 and (response_id == self.config.OPENNING_INDEX or response_id == 6):
+            conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
+            self.set_parameter(user_id, 'conv_id', conv_id+1)
+            self.user_parameters_dict[user_id]['conv_id'] = conv_id+1
         #extract names
         if bot_id == 7 and response_id == 2:
             name = find_name(query)
@@ -263,8 +269,9 @@ class TelegramBot():
             value -- value of the parameter
         """
         self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {parameter: value}}},
+                            '$set':{'user_parameters.'+parameter : value}},
                             upsert=True)
+
 
     def set_subj_id(self, user_id:int, subject_id:int):
         """
@@ -312,7 +319,8 @@ class TelegramBot():
             query(string) -- user input
         """
         if response_id != None:
-            text_response = self.get_text_response(bot_id, response_id)
+            formal = self.user_parameters_dict[user_id].get('formal', False)
+            text_response = self.get_text_response(bot_id, response_id, formal)
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
                 self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
@@ -322,7 +330,7 @@ class TelegramBot():
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
 
 
-    def get_text_response(self, bot_id, response_id):
+    def get_text_response(self, bot_id, response_id, formal):
         """
         Processes the input text and returns the response.
 
@@ -332,11 +340,11 @@ class TelegramBot():
         Parameters:
             bot_id(int) -- id of the bot
             response_id(int) -- id of the response within a bot
+            formal(bool) -- toggle between formal or informal scripts
 
         Returns:
             (list) -- list of strings the responses 
         """
-        formal = False #= self.user_parameters_dict[user_id].get('formal', False)
         if formal:
             response_dict =  self.reply_dict[bot_id][response_id].texts
         else:
@@ -478,10 +486,6 @@ class TelegramBot():
         self.db.user_history.update_one({'user_id':user_id},
                                         {"$push":{'user_history': history}}
                                     )
-        conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
-        self.set_parameter(user_id, 'conv_id', conv_id+1)
-        self.user_parameters_dict[user_id]['conv_id'] = conv_id
-
     
     def callback_handler(self, bot, update):
         """
