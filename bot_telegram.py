@@ -320,7 +320,7 @@ class TelegramBot():
         """
         if response_id != None:
             formal = self.user_parameters_dict[user_id].get('formal', False)
-            text_response = self.get_text_response(bot_id, response_id, formal)
+            text_response = self.get_text_response(bot_id, response_id, False)
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
                 self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
@@ -346,11 +346,11 @@ class TelegramBot():
             (list) -- list of strings the responses 
         """
         if formal:
-            response_dict =  self.reply_dict[bot_id][response_id].texts
+            self.response_dict =  self.reply_dict[bot_id][response_id]
         else:
-            response_dict =  self.reply_dict_informal[bot_id][response_id].texts
+            self.response_dict =  self.reply_dict_informal[bot_id][response_id]
         #get text of the selected mode
-        response_choices = response_dict.get(self.params.MODE, self.reply_dict[bot_id][response_id].texts[Modes.GENERAL])
+        response_choices = self.response_dict.texts.get(self.params.MODE, self.response_dict.texts[Modes.GENERAL])
         response = random.choice(response_choices)
         return response
 
@@ -400,7 +400,7 @@ class TelegramBot():
                 return 7, 3
             else:
                 return 7, 10
-        next = self.reply_dict[bot_id][response_id].next_id
+        next = self.response_dict.next_id
         if not next:
             next_id = None
         elif type(next) == list: #handle branching paths
