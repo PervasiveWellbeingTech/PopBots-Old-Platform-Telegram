@@ -153,8 +153,16 @@ class TelegramBot():
             self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
             subj_id = re.findall(' ([0-9]+)', query)
             if subj_id:
+                
+                ####################################RIGGED
+                self.set_parameter(user_id, 'choice', True)
+                self.user_parameters_dict[user_id]['choice'] = True
+                self.set_parameter(user_id, 'formal', False)
+                self.user_parameters_dict[user_id]['formal'] = False
+
+                #########################################
                 self.set_subj_id(user_id, int(subj_id[0]))
-                self.set_toggle(user_id, 'formal')
+                #self.set_toggle(user_id, 'formal')
             self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out
@@ -350,7 +358,7 @@ class TelegramBot():
         else:
             response_dict =  self.reply_dict_informal[bot_id][response_id].texts
         #get text of the selected mode
-        response_choices = response_dict.get(self.params.MODE, self.reply_dict[bot_id][response_id].texts[Modes.GENERAL])
+        response_choices = response_dict.get(self.params.MODE, response_dict[bot_id][response_id].texts[Modes.GENERAL])
         response = random.choice(response_choices)
         return response
 
