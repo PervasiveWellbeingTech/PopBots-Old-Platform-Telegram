@@ -17,10 +17,15 @@ from collections import defaultdict
 #from os import system
 from utils import Params, Config, Modes, find_keyword, find_name, find_id, find_problem
 from get_response import get_response_dict
+from get_response_informal import get_response_dict_informal
 from pymongo import MongoClient
 import telegram
+from telegram.ext.dispatcher import run_async
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
+import sys
+import traceback
 
 
 
@@ -57,12 +62,13 @@ class TelegramBot():
 
         #initialize bot responses and parameters
         self.reply_dict = get_response_dict()
+        self.reply_dict_informal = get_response_dict_informal()
         self.params = Params()
         self.config = Config()
 
         #initialize database
         if self.params.MODE == Modes.TEXT:
-            self.db = MongoClient().study_Aug_2019  #MongoClient().textbot_telegram
+            self.db = MongoClient().study_Informal_Nov_2019  #MongoClient().textbot_telegram
         else:
             self.db = MongoClient().voicebot_telegram
 
@@ -73,7 +79,7 @@ class TelegramBot():
         self.user_problem_dict = {}
 
 
-        self.allow_choice = True 
+        self.condition = False#True 
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict, self.ids = self.load_parameters(self.db.user_history)
 
@@ -119,23 +125,25 @@ class TelegramBot():
     #         parameters[hist['user_id']] = hist['user_parameters']
     #     return parameters
 
-    def process_updates(self, bot_updates):
-        """
-        Handles interactions with the Telegram server.
-        Receives all the user replies in the form of updates and tells
-        Telegram what to reply
+    # def process_updates(self, bot_updates):
+    #     """
+    #     Handles interactions with the Telegram server.
+    #     Receives all the user replies in the form of updates and tells
+    #     Telegram what to reply
 
-        Parameters:
-             bot_updates (iterator) -- all updates from bot.get_updates function
-        """
-        # Request updates after the last update_id
-        for update in bot_updates:
-            self.update_id = update.update_id + 1
-            if update.message and update.message.text: #ignores all non-text inputs
-                user_id = update.message.chat_id
-                query = update.message.text 
-                self.process_message(user_id, query)  
+    #     Parameters:
+    #          bot_updates (iterator) -- all updates from bot.get_updates function
+    #     """
+    #     # Request updates after the last update_id
+
+    #     for update in bot_updates:
+    #         self.update_id = update.update_id + 1
+    #         if update.message and update.message.text: #ignores all non-text inputs
+    #             user_id = update.message.chat_id
+    #             query = update.message.text 
+    #             self.process_message(user_id, query) 
                     
+    #@run_async
     def process_message(self, user_id, query):
         ############ Special Cases #######################
         if re.match(r'/start', query): #restart
@@ -145,14 +153,21 @@ class TelegramBot():
             self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
             subj_id = re.findall(' ([0-9]+)', query)
             if subj_id:
+                
+                ####################################RIGGED
+                self.set_parameter(user_id, 'choice', True)
+                self.user_parameters_dict[user_id]['choice'] = True
+                self.set_parameter(user_id, 'formal', False)
+                self.user_parameters_dict[user_id]['formal'] = False
+
+                #########################################
                 self.set_subj_id(user_id, int(subj_id[0]))
-                self.set_choice(user_id)
+                #self.set_toggle(user_id, 'formal')
             self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out
             self.log_action(user_id, None, None, "<TIMEOUT>", "")
             self.save_history_to_database(user_id)
-            self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
             self.user_history.pop(user_id, None)
             self.user_bot_state_dict.pop(user_id, None)
             self.user_problem_dict.pop(user_id, None)
@@ -160,16 +175,15 @@ class TelegramBot():
         elif re.match(r'/switch', query): #switch
             self.log_action(user_id, None, None, "<SWITCH>", "")
             self.user_parameters_dict[user_id]['switch'] = True
-            self.save_history_to_database(user_id)
-            self.user_parameters_dict[user_id]['last']=self.user_bot_state_dict[user_id][0]
-            self.user_history.pop(user_id, None)
+            #self.save_history_to_database(user_id)
+            #self.user_history.pop(user_id, None)
             self.user_bot_state_dict[user_id] = (7,7)
 
         ############ Normal Cases #######################
         bot_id, response_id = self.get_next(user_id, query)
-        choice = self.user_parameters_dict[user_id].get('choice_enabled', False)
+        choice = self.user_parameters_dict[user_id].get('choice', False)
+        formal = self.user_parameters_dict[user_id].get('formal', False)
         switch = self.user_parameters_dict[user_id].get('switch', False)
-        #print(self.user_history[user_id])
 
         if response_id == self.config.CLOSING_INDEX and not switch:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
@@ -178,7 +192,7 @@ class TelegramBot():
         if bot_id == 7 and response_id == 9:
             self.log_action(user_id, bot_id, response_id, "<CONVERSATION_END>", query)
             self.save_history_to_database(user_id)
-        
+
         if response_id == None: #End of conversation"
             self.user_history.pop(user_id, None)
             self.user_parameters_dict[user_id]['last']=bot_id
@@ -187,6 +201,12 @@ class TelegramBot():
                 bot_id, response_id = self.get_next(user_id, query)
             else:
                 self.user_bot_state_dict.pop(user_id, None)
+
+        # if it begins a conversation, increment the counter
+        if bot_id == 7 and (response_id == self.config.OPENNING_INDEX or response_id == 6):
+            conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
+            self.set_parameter(user_id, 'conv_id', conv_id+1)
+            self.user_parameters_dict[user_id]['conv_id'] = conv_id+1
         #extract names
         if bot_id == 7 and response_id == 2:
             name = find_name(query)
@@ -223,6 +243,7 @@ class TelegramBot():
             else:
                 last = self.user_parameters_dict[user_id].get('last', None)
                 bot_id = self.recommend_bot(last)
+                self.user_parameters_dict[user_id]['last']=bot_id
             response_id = self.config.OPENNING_INDEX
 
 
@@ -246,10 +267,24 @@ class TelegramBot():
             self.process_message(user_id, "<SKIP>")
 
 
+    def set_parameter(self, user_id:int, parameter:str, value):
+        """
+        Sets a parameter in the database
+
+        Parameters:
+            user_id(int) -- unique user identifyer
+            parameter(int) -- subject id (MUST be a non-indentifiable number)
+            value -- value of the parameter
+        """
+        self.db.user_history.update_one({'user_id':user_id}, {
+                            '$set':{'user_parameters.'+parameter : value}},
+                            upsert=True)
+
+
     def set_subj_id(self, user_id:int, subject_id:int):
         """
         Parameters:
-            user_id(int) -- unique user identifye
+            user_id(int) -- unique user identifyer
             subject_id(int) -- subject id (MUST be a non-indentifiable number)
         """
         self.db.user_history.update_one({'user_id':user_id}, {'$set':{'subject_id': subject_id}},
@@ -257,25 +292,28 @@ class TelegramBot():
 
         self.ids[user_id] = subject_id
 
-    def set_choice(self, user_id:int):
+    def set_toggle(self, user_id:int, parameter:str):
         """
-        Set subjects to either the choice (able to choose bots) or non-choice group.
+        Set subjects to either one of 2 conditions.
         Parameters:
             user_id(int) -- unique user identifyer
+            parameter(str) -- name of the condition
         """
-        if 'choice_enabled' not in self.user_parameters_dict[user_id]:
-            if self.allow_choice:
-                self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {'choice_enabled': True}}},
-                            upsert=True)
-                self.user_parameters_dict[user_id]['choice_enabled'] = True
-                self.allow_choice = False
+        if parameter not in self.user_parameters_dict[user_id]:
+            if self.condition:
+                # self.db.user_history.update_one({'user_id':user_id}, {
+                #             '$set':{'user_parameters': {parameter: True}}},
+                #             upsert=True)
+                self.set_parameter(user_id, parameter, True)
+                self.user_parameters_dict[user_id][parameter] = True
+                self.condition = False
             else:
-                self.db.user_history.update_one({'user_id':user_id}, {
-                            '$set':{'user_parameters': {'choice_enabled': False}}},
-                            upsert=True)
-                self.user_parameters_dict[user_id]['choice_enabled'] = False
-                self.allow_choice = True
+                # self.db.user_history.update_one({'user_id':user_id}, {
+                #             '$set':{'user_parameters': {parameter: False}}},
+                #             upsert=True)
+                self.set_parameter(user_id, parameter, False)
+                self.user_parameters_dict[user_id][parameter] = False
+                self.condition = True
 
 
     def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup = None):
@@ -289,7 +327,8 @@ class TelegramBot():
             query(string) -- user input
         """
         if response_id != None:
-            text_response = self.get_text_response(bot_id, response_id)
+            formal = self.user_parameters_dict[user_id].get('formal', False)
+            text_response = self.get_text_response(bot_id, response_id, formal)
             text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
             for res in text_response_format:
                 self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
@@ -299,7 +338,7 @@ class TelegramBot():
             self.user_bot_state_dict[user_id] = (bot_id, response_id)
 
 
-    def get_text_response(self, bot_id, response_id):
+    def get_text_response(self, bot_id, response_id, formal):
         """
         Processes the input text and returns the response.
 
@@ -309,15 +348,18 @@ class TelegramBot():
         Parameters:
             bot_id(int) -- id of the bot
             response_id(int) -- id of the response within a bot
+            formal(bool) -- toggle between formal or informal scripts
 
         Returns:
             (list) -- list of strings the responses 
         """
-        response_dict =  self.reply_dict[bot_id][response_id].texts
+        if formal:
+            response_dict =  self.reply_dict[bot_id][response_id].texts
+        else:
+            response_dict =  self.reply_dict_informal[bot_id][response_id].texts
         #get text of the selected mode
-        response_choices = response_dict.get(self.params.MODE, self.reply_dict[bot_id][response_id].texts[Modes.GENERAL])
+        response_choices = response_dict.get(self.params.MODE, response_dict[Modes.GENERAL])
         response = random.choice(response_choices)
-
         return response
 
     def replace_entities(self, responses, user_id, bot_id):
@@ -362,7 +404,7 @@ class TelegramBot():
             return 7, 6
 
         if bot_id == 7 and (response_id == 6 or response_id == 7):
-            if self.user_parameters_dict[user_id].get('choice_enabled', False): #go to choice selection
+            if self.user_parameters_dict[user_id].get('choice', False): #go to choice selection
                 return 7, 3
             else:
                 return 7, 10
@@ -400,7 +442,9 @@ class TelegramBot():
 
             Note: it also logs a time stamp 
         """
+        conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
         new_entry = {
+                        'conv_id':conv_id,
                         'bot_id':bot_id, 
                         'response_id':response_id,
                         'query':query,
@@ -450,25 +494,55 @@ class TelegramBot():
         self.db.user_history.update_one({'user_id':user_id},
                                         {"$push":{'user_history': history}}
                                     )
+    
+    def callback_handler(self, bot, update):
+        """
+        Wrapper function to call the message handler
+        """
+        try:
+            self.process_message(update.message.chat_id, update.message.text)
+        except:
+            exc_info = sys.exc_info()
+        finally:
+            traceback.print_exception(*exc_info)
+            del exc_info
+           #print(sys.exc_info()[0])
+           # traceback.print_stack()
+
+        self.process_updates(update)
+
+    def error_callback(bot, update, error):
+        raise error
 
     def run(self):
         """
         Run the bot.
         """
+        updater = Updater(token)
+        dp = updater.dispatcher # Get the dispatcher to register handlers
+        handler = MessageHandler(Filters.text, self.callback_handler)
+        dp.add_handler(handler)
+        dp.add_handler(CommandHandler("start", self.callback_handler))
+        dp.add_handler(CommandHandler("switch", self.callback_handler))
+
+        #dp.add_error_handler(self.error_callback)
         print("Running Bot ... (Ctrl-C to exit)")
-        while True:
-            #Check if there are updates.
-            try:
-                bot_updates = self.bot.get_updates(offset=self.update_id, timeout=60)
-            except NetworkError:
-                sleep(1)
-                continue
-            except Unauthorized:
-                # The user has removed or blocked the bot.
-                self.update_id += 1           
-                continue
-            #If succesful
-            self.process_updates(bot_updates)
+        updater.start_polling()
+        #updater.idle()
+
+        # while True:
+        #     #Check if there are updates.
+        #     try:
+        #         bot_updates = self.bot.get_updates(offset=self.update_id, timeout=60)
+        #     except NetworkError:
+        #         sleep(1)
+        #         continue
+        #     except Unauthorized:
+        #         # The user has removed or blocked the bot.
+        #         self.update_id += 1           
+        #         continue
+        #     #If succesful
+        #     self.process_updates(bot_updates)
 
 if __name__ == '__main__':
     # Telegram Bot Authorization Token
