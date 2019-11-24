@@ -423,5 +423,4 @@ def get_response_dict_informal():
     bot_texts[8][16] = Reply(bot_id=8, response_id=16, texts={modes.GENERAL:[["I\'m sorry to hear that. 😕 Me and my bot-friends are always here to support you 🤗","Hey, I just want to say that things are going to get better. 🌞 Hang in there tiger! Eating and sleeping regularly as well as talking to loved ones can be great places to start if you are feeling stressed 🤷", "Sounds good?"]]}, next_id=config.CLOSING_INDEX)    
 
 
-
     return bot_texts

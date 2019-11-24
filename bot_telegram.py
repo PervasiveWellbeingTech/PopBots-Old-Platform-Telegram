@@ -358,7 +358,7 @@ class TelegramBot():
         else:
             response_dict =  self.reply_dict_informal[bot_id][response_id].texts
         #get text of the selected mode
-        response_choices = response_dict.get(self.params.MODE, response_dict[bot_id][response_id].texts[Modes.GENERAL])
+        response_choices = response_dict.get(self.params.MODE, response_dict[Modes.GENERAL])
         response = random.choice(response_choices)
         return response
 
