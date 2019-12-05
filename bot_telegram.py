@@ -26,10 +26,12 @@ from telegram.error import NetworkError, Unauthorized
 from time import sleep
 import sys
 import traceback
+from gibberish_filter import isGibberish
 
 
 
 TIMEOUT_SECONDS = 3600
+DEBUG_MODE = True
 
 class TelegramBot():
     """
@@ -153,16 +155,14 @@ class TelegramBot():
             self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
             subj_id = re.findall(' ([0-9]+)', query)
             if subj_id:
-                
-                ####################################RIGGED
-                self.set_parameter(user_id, 'choice', True)
-                self.user_parameters_dict[user_id]['choice'] = True
-                self.set_parameter(user_id, 'formal', False)
-                self.user_parameters_dict[user_id]['formal'] = False
-
-                #########################################
+                if DEBUG_MODE:
+                    self.set_parameter(user_id, 'choice', True)
+                    self.user_parameters_dict[user_id]['choice'] = True
+                    self.set_parameter(user_id, 'formal', False)
+                    self.user_parameters_dict[user_id]['formal'] = False
+                else:
+                    self.set_toggle(user_id, 'formal')
                 self.set_subj_id(user_id, int(subj_id[0]))
-                #self.set_toggle(user_id, 'formal')
             self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out

@@ -46,7 +46,7 @@ if __name__== "__main__":
         else:
             text = normalizeText(text)
             #print("---> " + str(pct_English(text)*100) + '% of English words in input.' + '\n')
-            if isGibberish(text):
+            if isGibberish(text, 0.6):
                 print("--->[" + text + "] classified as GIBBERISH" + '\n')
             else:
                 print("--->[" + text + "] classified as ENGLISH" + '\n')
