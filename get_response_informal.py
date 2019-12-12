@@ -357,6 +357,7 @@ def get_response_dict_informal():
     bot_texts[7][7] = Reply(bot_id=7, response_id=7, texts={modes.GENERAL:[[""]]}, next_id=8)
     bot_texts[7][8] = Reply(bot_id=7, response_id=8, texts={modes.GENERAL:[["You seem to have switched bots in the past conversation. Could you tell us why?"]]}, next_id=9)
     bot_texts[7][9] = Reply(bot_id=7, response_id=9, texts={modes.GENERAL:closing}, next_id=None)
+    #bot_texts[7][11] = Reply(bot_id=7, response_id=11, texts={modes.GENERAL:[["I\'m sorry, I didn\'t quite catch that, could you repeat? 😕"]]}, next_id=None)
 
 
     #---------------------------------------------------------------------------------------------------------------------------------

@@ -20,7 +20,7 @@ from get_response import get_response_dict
 from get_response_informal import get_response_dict_informal
 from pymongo import MongoClient
 import telegram
-from telegram.ext.dispatcher import run_async
+#from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
@@ -31,7 +31,7 @@ from gibberish_filter import isGibberish
 
 
 TIMEOUT_SECONDS = 3600
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 class TelegramBot():
     """
@@ -81,7 +81,7 @@ class TelegramBot():
         self.user_problem_dict = {}
 
 
-        self.condition = False#True 
+        self.condition = True 
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict, self.ids = self.load_parameters(self.db.user_history)
 
@@ -495,10 +495,13 @@ class TelegramBot():
                                         {"$push":{'user_history': history}}
                                     )
     
-    def callback_handler(self, bot, update):
+    def callback_handler(self, update, context):
         """
         Wrapper function to call the message handler
+
+        This function will also catch and print out errors in the console
         """
+        
         try:
             self.process_message(update.message.chat_id, update.message.text)
         except:
@@ -506,8 +509,6 @@ class TelegramBot():
         finally:
             traceback.print_exception(*exc_info)
             del exc_info
-           #print(sys.exc_info()[0])
-           # traceback.print_stack()
 
         self.process_updates(update)
 
@@ -518,7 +519,7 @@ class TelegramBot():
         """
         Run the bot.
         """
-        updater = Updater(token)
+        updater = Updater(token, use_context=True)
         dp = updater.dispatcher # Get the dispatcher to register handlers
         handler = MessageHandler(Filters.text, self.callback_handler)
         dp.add_handler(handler)
