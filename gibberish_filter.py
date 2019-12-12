@@ -22,20 +22,18 @@ def pct_English(txt):
 
 def normalizeText(text):
     text = text.lower()
-    text = re.sub(r'[.?,!]','',text)
+    text = re.sub(r'[^0-9a-zA-Z ]','',text)
     return text
 
-def isGibberish(txt, threshold = 1):
+def isGibberish(txt, threshold = 1, allow_one_word = True):
     txt = normalizeText(txt)
     englishPtg = pct_English(txt)
     print(englishPtg)
     txt = txt.split()
-    if len(txt) == 1:
-        print("text equal 1")
+    if allow_one_word and len(txt) == 1:
         if englishPtg < 1:
             return True
     else:
-        print("text equal 2")
         if englishPtg < threshold:
             return True
     return False
@@ -53,6 +51,7 @@ if __name__== "__main__":
             text = normalizeText(text)
             #print("---> " + str(pct_English(text)*100) + '% of English words in input.' + '\n')
             if isGibberish(text, GIBBERISH_THRESHOLD):
+
                 print("--->[" + text + "] classified as GIBBERISH" + '\n')
             else:
                 print("--->[" + text + "] classified as ENGLISH" + '\n')

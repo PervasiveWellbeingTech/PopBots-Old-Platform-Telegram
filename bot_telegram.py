@@ -20,16 +20,18 @@ from get_response import get_response_dict
 from get_response_informal import get_response_dict_informal
 from pymongo import MongoClient
 import telegram
-from telegram.ext.dispatcher import run_async
+#from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
 import sys
 import traceback
+from gibberish_filter import isGibberish
 
 
 
 TIMEOUT_SECONDS = 3600
+DEBUG_MODE = False
 
 class TelegramBot():
     """
@@ -79,7 +81,7 @@ class TelegramBot():
         self.user_problem_dict = {}
 
 
-        self.condition = False#True 
+        self.condition = True 
         #self.user_parameters_dict = self.load_user_parameters(self.db.user_history)
         self.user_name_dict, self.user_parameters_dict, self.ids = self.load_parameters(self.db.user_history)
 
@@ -153,16 +155,14 @@ class TelegramBot():
             self.user_bot_state_dict[user_id] = (7 , self.config.START_INDEX)
             subj_id = re.findall(' ([0-9]+)', query)
             if subj_id:
-                
-                ####################################RIGGED
-                self.set_parameter(user_id, 'choice', True)
-                self.user_parameters_dict[user_id]['choice'] = True
-                self.set_parameter(user_id, 'formal', False)
-                self.user_parameters_dict[user_id]['formal'] = False
-
-                #########################################
+                if DEBUG_MODE:
+                    self.set_parameter(user_id, 'choice', True)
+                    self.user_parameters_dict[user_id]['choice'] = True
+                    self.set_parameter(user_id, 'formal', False)
+                    self.user_parameters_dict[user_id]['formal'] = False
+                else:
+                    self.set_toggle(user_id, 'formal')
                 self.set_subj_id(user_id, int(subj_id[0]))
-                #self.set_toggle(user_id, 'formal')
             self.user_problem_dict.pop(user_id, None)
 
         elif self.conversation_timeout(user_id): #Time out
@@ -495,10 +495,13 @@ class TelegramBot():
                                         {"$push":{'user_history': history}}
                                     )
     
-    def callback_handler(self, bot, update):
+    def callback_handler(self, update, context):
         """
         Wrapper function to call the message handler
+
+        This function will also catch and print out errors in the console
         """
+        
         try:
             self.process_message(update.message.chat_id, update.message.text)
         except:
@@ -506,8 +509,6 @@ class TelegramBot():
         finally:
             traceback.print_exception(*exc_info)
             del exc_info
-           #print(sys.exc_info()[0])
-           # traceback.print_stack()
 
         self.process_updates(update)
 
@@ -518,7 +519,7 @@ class TelegramBot():
         """
         Run the bot.
         """
-        updater = Updater(token)
+        updater = Updater(token, use_context=True)
         dp = updater.dispatcher # Get the dispatcher to register handlers
         handler = MessageHandler(Filters.text, self.callback_handler)
         dp.add_handler(handler)
