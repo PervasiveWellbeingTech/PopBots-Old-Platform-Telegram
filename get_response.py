@@ -2,9 +2,7 @@
 
 """
 This file contains the script for all bots.
-
 Created by Honghao Wei and Nick Tantivasadakarn.
-
 Bot Scripts by Pablo Paredes, Honghao Wei, Hiroshi Mendoza, Jade Thronton, Nick Tantivasadakarn and others. 
 """
 
@@ -20,9 +18,7 @@ import random
 def get_response_dict():
     """
     Returns a dictionary containing all the scripts for the bots.
-
         Format: bot_texts[bot_id][response_id] = Reply(...)
-
     Note: 
         - All bots must have a bot name and a bot tech name, and must be added in the 
         bot_name_list and bot_tech_name_list in the Parameters class in utils.py
