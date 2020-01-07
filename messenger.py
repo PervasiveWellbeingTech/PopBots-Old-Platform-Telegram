@@ -20,20 +20,22 @@ from get_response import get_response_dict
 from get_response_informal import get_response_dict_informal
 from pymongo import MongoClient
 import telegram
-#from telegram.ext.dispatcher import run_async
+from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from telegram.error import NetworkError, Unauthorized
 from time import sleep
 import sys
 import traceback
+
 from gibberish_filter import isGibberish
+
 
 
 
 TIMEOUT_SECONDS = 3600
 DEBUG_MODE = False
 
-class TelegramBot():
+class Message():
     """
     Implementation of the bot.
 
@@ -53,15 +55,9 @@ class TelegramBot():
         self.user_parameters_dict(defaultdict) -- dictionary that stores all parameters used by the bots.
     """
 
-    def __init__(self, token): #, reply_dict, **kwargs):
-        print("Bot initialization.")
+    def __init__(self): #, reply_dict, **kwargs):
         #initialize telegram bot
-        self.bot = telegram.Bot(token)
-        try:
-            self.update_id = self.bot.get_updates()[0].update_id
-        except IndexError:
-            self.update_id = None
-
+        
         #initialize bot responses and parameters
         self.reply_dict = get_response_dict()
         self.reply_dict_informal = get_response_dict_informal()
@@ -146,7 +142,39 @@ class TelegramBot():
     #             self.process_message(user_id, query) 
                     
     #@run_async
+
+    def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup = None):
+        """
+        Posts the appropriate text to Telegram, and logs the conversation
+
+        Parameters:
+            bot_id(int) -- bot id
+            response_id(int) -- response within bot
+            user_id(int) -- unique identifyer
+            query(string) -- user input
+        """
+        if response_id != None:
+            formal = self.user_parameters_dict[user_id].get('formal', False)
+            text_response = self.get_text_response(bot_id, response_id, formal)
+            text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
+            #for res in text_response_format:
+                #self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
+                #sleep(min(len(res)/20,2.5))
+                #self.bot.send_message(chat_id=user_id, text=res, reply_markup = reply_markup)
+
+            self.log_action(user_id, bot_id, response_id, text_response_format, query)
+            self.user_bot_state_dict[user_id] = (bot_id, response_id)
+        
+        return text_response_format
+
+
     def process_message(self, user_id, query):
+
+        """
+
+        """
+        response_dict={'response_list':None,'img':None,'reply_markup':None}
+
         ############ Special Cases #######################
         if re.match(r'/start', query): #restart
             self.log_action(user_id, None, None, "RESET", "")
@@ -235,7 +263,8 @@ class TelegramBot():
         
         #select bot
         if bot_id == 7 and (response_id == 4 or response_id == 10):
-            self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+            response_dict['response_list'] = self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+            
             bot_choice = self.params.bot2id.get(query, None)
             #reply_markup = telegram.ReplyKeyboardRemove()
             if type(bot_choice) == int:
@@ -250,15 +279,17 @@ class TelegramBot():
         #handle images
         if self.params.MODE == Modes.TEXT and response_id == self.config.OPENNING_INDEX:
             img = open('img/{}.png'.format(bot_id), 'rb')
-            self.bot.send_photo(chat_id=user_id, photo=img)
+            #self.bot.send_photo(chat_id=user_id, photo=img)
+            response_dict['img']  = img
 
         if bot_id == 7 and response_id == 6:
             img = open('img/{}.png'.format(bot_id), 'rb')
-            self.bot.send_photo(chat_id=user_id, photo=img)
+            #self.bot.send_photo(chat_id=user_id, photo=img)
+            response_dict['img']  = img
         
 
         #handle text responses
-        self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
+        response_dict['response_list'] = self.post_and_log_text(bot_id, response_id, user_id, query, reply_markup)
         #To skip 
         if bot_id == 7 and response_id == 4:
             self.process_message(user_id, "<SKIP>")
@@ -266,6 +297,8 @@ class TelegramBot():
         if bot_id == 2 and (response_id == 3 or response_id == 4):
             self.process_message(user_id, "<SKIP>")
 
+        response_dict['reply_markup'] = reply_markup
+        return response_dict
 
     def set_parameter(self, user_id:int, parameter:str, value):
         """
@@ -316,27 +349,6 @@ class TelegramBot():
                 self.condition = True
 
 
-    def post_and_log_text(self, bot_id, response_id, user_id, query, reply_markup = None):
-        """
-        Posts the appropriate text to Telegram, and logs the conversation
-
-        Parameters:
-            bot_id(int) -- bot id
-            response_id(int) -- response within bot
-            user_id(int) -- unique identifyer
-            query(string) -- user input
-        """
-        if response_id != None:
-            formal = self.user_parameters_dict[user_id].get('formal', False)
-            text_response = self.get_text_response(bot_id, response_id, formal)
-            text_response_format = list(self.replace_entities(text_response, user_id, bot_id))
-            for res in text_response_format:
-                self.bot.sendChatAction(chat_id=user_id, action = telegram.ChatAction.TYPING)
-                sleep(min(len(res)/20,2.5))
-                self.bot.send_message(chat_id=user_id, text=res, reply_markup = reply_markup)
-            self.log_action(user_id, bot_id, response_id, text_response_format, query)
-            self.user_bot_state_dict[user_id] = (bot_id, response_id)
-
 
     def get_text_response(self, bot_id, response_id, formal):
         """
@@ -354,12 +366,16 @@ class TelegramBot():
             (list) -- list of strings the responses 
         """
         if formal:
-            response_dict =  self.reply_dict[bot_id][response_id].texts
+            print("Loading formal bot")
+            self.response_dict =  self.reply_dict[bot_id][response_id]
         else:
-            response_dict =  self.reply_dict_informal[bot_id][response_id].texts
+            print("Loading informal bot")
+            self.response_dict =  self.reply_dict_informal[bot_id][response_id]
         #get text of the selected mode
-        response_choices = response_dict.get(self.params.MODE, response_dict[Modes.GENERAL])
+        #response_choices = self.response_dict.get(self.params.MODE, self.response_dict[Modes.GENERAL])
+        response_choices = self.response_dict.texts.get(self.params.MODE, self.response_dict.texts[Modes.GENERAL])
         response = random.choice(response_choices)
+        
         return response
 
     def replace_entities(self, responses, user_id, bot_id):
@@ -408,7 +424,7 @@ class TelegramBot():
                 return 7, 3
             else:
                 return 7, 10
-        next = self.reply_dict[bot_id][response_id].next_id
+        next = self.response_dict.next_id
         if not next:
             next_id = None
         elif type(next) == list: #handle branching paths
@@ -440,7 +456,7 @@ class TelegramBot():
             replies(list/iterator) -- list/iterator of text that the bot replies to the user
             query(string) -- user input
 
-            Note: it also logs a time stamp 
+            Note: it also logs a timestamp 
         """
         conv_id = self.user_parameters_dict[user_id].get('conv_id', 0)
         new_entry = {
@@ -495,60 +511,3 @@ class TelegramBot():
                                         {"$push":{'user_history': history}}
                                     )
     
-    def callback_handler(self, update, context):
-        """
-        Wrapper function to call the message handler
-
-        This function will also catch and print out errors in the console
-        """
-        
-        try:
-            self.process_message(update.message.chat_id, update.message.text)
-        except:
-            exc_info = sys.exc_info()
-        finally:
-            traceback.print_exception(*exc_info)
-            del exc_info
-
-        self.process_updates(update)
-
-    def error_callback(bot, update, error):
-        raise error
-
-    def run(self):
-        """
-        Run the bot.
-        """
-        updater = Updater(token, use_context=True)
-        dp = updater.dispatcher # Get the dispatcher to register handlers
-        handler = MessageHandler(Filters.text, self.callback_handler)
-        dp.add_handler(handler)
-        dp.add_handler(CommandHandler("start", self.callback_handler))
-        dp.add_handler(CommandHandler("switch", self.callback_handler))
-
-        #dp.add_error_handler(self.error_callback)
-        print("Running Bot ... (Ctrl-C to exit)")
-        updater.start_polling()
-        #updater.idle()
-
-        # while True:
-        #     #Check if there are updates.
-        #     try:
-        #         bot_updates = self.bot.get_updates(offset=self.update_id, timeout=60)
-        #     except NetworkError:
-        #         sleep(1)
-        #         continue
-        #     except Unauthorized:
-        #         # The user has removed or blocked the bot.
-        #         self.update_id += 1           
-        #         continue
-        #     #If succesful
-        #     self.process_updates(bot_updates)
-
-if __name__ == '__main__':
-    # Telegram Bot Authorization Token
-    f = open('token.txt')
-    token = f.read()
-    bot = TelegramBot(token)
-    bot.run()
-
